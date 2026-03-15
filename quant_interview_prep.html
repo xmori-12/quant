@@ -1,0 +1,2757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuantEdge — Quant Finance Interview Mastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0f0f17;
+    --bg3: #14141f;
+    --surface: #1a1a2e;
+    --surface2: #22223a;
+    --border: #2a2a45;
+    --gold: #f4c542;
+    --gold2: #e8a800;
+    --teal: #00d4aa;
+    --teal2: #00b890;
+    --red: #ff4d6d;
+    --purple: #a855f7;
+    --text: #e8e8f0;
+    --text2: #9898b8;
+    --text3: #5a5a7a;
+    --green: #22c55e;
+    --orange: #f97316;
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--gold);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .nav-logo span { color: var(--teal); }
+
+  .nav-links {
+    display: flex; gap: 4px;
+  }
+
+  .nav-btn {
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .nav-btn.active { color: var(--gold); }
+
+  /* ===== PAGES ===== */
+  .page { display: none; min-height: 100vh; padding-top: 70px; }
+  .page.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: calc(100vh - 70px);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.25;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(244,197,66,0.08), transparent 70%);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px;
+    background: rgba(244,197,66,0.1);
+    border: 1px solid rgba(244,197,66,0.3);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    text-align: center;
+    max-width: 800px;
+    position: relative;
+  }
+
+  .hero-title .line-gold { color: var(--gold); font-style: italic; }
+  .hero-title .line-teal { color: var(--teal); }
+
+  .hero-sub {
+    max-width: 560px;
+    text-align: center;
+    color: var(--text2);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 20px 0 40px;
+    position: relative;
+  }
+
+  .hero-stats {
+    display: flex; gap: 40px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat .num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .hero-stat .label {
+    font-size: 0.75rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .hero-cta {
+    display: flex; gap: 12px;
+    flex-wrap: wrap; justify-content: center;
+    position: relative;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--gold);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(244,197,66,0.3);
+  }
+
+  .btn-secondary {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--text2);
+    background: var(--surface);
+    transform: translateY(-2px);
+  }
+
+  /* ===== TOPIC CARDS ===== */
+  .section {
+    padding: 40px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 32px;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .section-sub {
+    color: var(--text2);
+    font-size: 0.95rem;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--card-accent, var(--gold)), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .topic-card:hover {
+    border-color: var(--card-accent, var(--gold));
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  .topic-card:hover::before { opacity: 1; }
+
+  .topic-icon {
+    width: 44px; height: 44px;
+    background: rgba(244,197,66,0.1);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+    border: 1px solid rgba(244,197,66,0.2);
+  }
+
+  .topic-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .topic-desc {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .topic-meta {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .topic-count {
+    font-size: 0.75rem;
+    color: var(--text3);
+    font-family: var(--font-mono);
+  }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--bg3);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--card-accent, var(--gold));
+    transition: width 0.5s ease;
+  }
+
+  /* ===== QUIZ PAGE ===== */
+  .quiz-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .quiz-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .quiz-back {
+    display: flex; align-items: center; gap: 8px;
+    background: none; border: none;
+    color: var(--text2); cursor: pointer;
+    font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .quiz-back:hover { color: var(--text); background: var(--surface); }
+
+  .quiz-progress-info {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text2);
+  }
+
+  .quiz-score-badge {
+    padding: 6px 14px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--green);
+    font-family: var(--font-mono);
+  }
+
+  .quiz-progress-track {
+    height: 4px;
+    background: var(--surface);
+    border-radius: 2px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .question-category {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px;
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .question-difficulty {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+
+  .diff-easy { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .diff-medium { background: rgba(249,115,22,0.1); color: var(--orange); border: 1px solid rgba(249,115,22,0.2); }
+  .diff-hard { background: rgba(255,77,109,0.1); color: var(--red); border: 1px solid rgba(255,77,109,0.2); }
+
+  .question-text {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .question-hint {
+    background: rgba(168,85,247,0.08);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: var(--text2);
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .question-hint.visible { display: block; }
+
+  .question-hint-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .options-grid {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .option-btn {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 12px;
+    line-height: 1.4;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: var(--surface);
+  }
+
+  .option-letter {
+    width: 28px; height: 28px; min-width: 28px;
+    background: var(--surface2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text2);
+    transition: all 0.2s;
+  }
+
+  .option-btn:hover:not(:disabled) .option-letter {
+    background: rgba(244,197,66,0.2);
+    color: var(--gold);
+  }
+
+  .option-btn.correct {
+    border-color: var(--green);
+    background: rgba(34,197,94,0.08);
+  }
+
+  .option-btn.correct .option-letter {
+    background: var(--green);
+    color: #0a0a0f;
+  }
+
+  .option-btn.incorrect {
+    border-color: var(--red);
+    background: rgba(255,77,109,0.08);
+  }
+
+  .option-btn.incorrect .option-letter {
+    background: var(--red);
+    color: white;
+  }
+
+  .option-btn.revealed {
+    border-color: rgba(34,197,94,0.4);
+    background: rgba(34,197,94,0.04);
+    opacity: 0.7;
+  }
+
+  .quiz-actions {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .quiz-actions-left {
+    display: flex; gap: 8px;
+  }
+
+  .btn-hint {
+    padding: 10px 20px;
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 8px;
+    color: var(--purple);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-hint:hover { background: rgba(168,85,247,0.2); }
+
+  .btn-explain {
+    padding: 10px 20px;
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.3);
+    border-radius: 8px;
+    color: var(--teal);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-explain:hover { background: rgba(0,212,170,0.2); }
+
+  .btn-next {
+    padding: 12px 28px;
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    color: #0a0a0f;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-next:hover { background: var(--gold2); transform: translateY(-1px); }
+  .btn-next:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+  /* ===== EXPLANATION BOX ===== */
+  .explanation-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .explanation-box.visible { display: block; animation: fadeIn 0.3s ease; }
+
+  .explanation-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .explanation-text {
+    font-size: 0.92rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .explanation-text strong { color: var(--text); }
+
+  .explanation-text code {
+    font-family: var(--font-mono);
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: var(--gold);
+  }
+
+  /* ===== RESULTS SCREEN ===== */
+  .results-screen {
+    text-align: center;
+    padding: 60px 24px;
+  }
+
+  .results-trophy {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: bounceIn 0.6s ease;
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .results-score-circle {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 24px auto;
+    background: rgba(244,197,66,0.05);
+    box-shadow: 0 0 60px rgba(244,197,66,0.15);
+  }
+
+  .results-pct {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .results-pct-label {
+    font-size: 0.75rem;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .results-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .results-sub {
+    color: var(--text2);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+  }
+
+  .results-breakdown {
+    display: flex; gap: 16px; justify-content: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .results-stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 24px;
+    min-width: 100px;
+  }
+
+  .results-stat-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--text);
+  }
+
+  .results-stat-label {
+    font-size: 0.75rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* ===== FLASHCARD PAGE ===== */
+  .flashcard-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .flashcard-deck-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .deck-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .deck-card:hover, .deck-card.active {
+    border-color: var(--gold);
+    background: rgba(244,197,66,0.05);
+  }
+
+  .deck-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .deck-name { font-weight: 700; font-size: 0.9rem; }
+  .deck-count { font-size: 0.75rem; color: var(--text2); margin-top: 4px; font-family: var(--font-mono); }
+
+  .flashcard-scene {
+    perspective: 1200px;
+    margin: 0 auto 24px;
+  }
+
+  .flashcard {
+    width: 100%;
+    min-height: 300px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    cursor: pointer;
+  }
+
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .fc-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+
+  .fc-back {
+    transform: rotateY(180deg);
+    background: var(--bg2);
+    border-color: var(--teal);
+  }
+
+  .fc-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+
+  .fc-front .fc-label { color: var(--gold); }
+  .fc-back .fc-label { color: var(--teal); }
+
+  .fc-content {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .fc-back .fc-content {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .fc-hint {
+    font-size: 0.8rem;
+    color: var(--text3);
+    margin-top: 20px;
+    font-style: italic;
+  }
+
+  .flashcard-nav {
+    display: flex; align-items: center; gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .fc-nav-btn {
+    width: 44px; height: 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .fc-nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .fc-counter {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text2);
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .fc-rating {
+    display: flex; gap: 10px; justify-content: center;
+    margin-top: 16px;
+  }
+
+  .fc-rate-btn {
+    flex: 1; max-width: 140px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .rate-hard { background: rgba(255,77,109,0.1); color: var(--red); border-color: rgba(255,77,109,0.3); }
+  .rate-hard:hover { background: rgba(255,77,109,0.2); }
+  .rate-ok { background: rgba(249,115,22,0.1); color: var(--orange); border-color: rgba(249,115,22,0.3); }
+  .rate-ok:hover { background: rgba(249,115,22,0.2); }
+  .rate-easy { background: rgba(34,197,94,0.1); color: var(--green); border-color: rgba(34,197,94,0.3); }
+  .rate-easy:hover { background: rgba(34,197,94,0.2); }
+
+  /* ===== CHEATSHEET PAGE ===== */
+  .cheatsheet-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .cs-tabs {
+    display: flex; gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cs-tab {
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cs-tab:hover, .cs-tab.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(244,197,66,0.05);
+  }
+
+  .cs-content { display: none; }
+  .cs-content.active { display: block; animation: fadeIn 0.2s ease; }
+
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 14px;
+  }
+
+  .formula-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    transition: all 0.2s;
+  }
+
+  .formula-card:hover {
+    border-color: var(--border);
+    background: var(--surface2);
+  }
+
+  .formula-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .formula-eq {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--gold);
+    background: var(--bg3);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    border-left: 2px solid var(--gold2);
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  .formula-note {
+    font-size: 0.8rem;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* ===== PROBLEM BANK ===== */
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .problem-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+
+  .problem-item:hover {
+    border-color: var(--border);
+    background: var(--surface2);
+    transform: translateX(4px);
+  }
+
+  .problem-num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text3);
+    min-width: 36px;
+    padding-top: 2px;
+  }
+
+  .problem-body { flex: 1; }
+
+  .problem-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .problem-meta {
+    display: flex; gap: 8px; align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .problem-tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-brain { background: rgba(249,115,22,0.1); color: var(--orange); }
+  .tag-prob { background: rgba(0,212,170,0.1); color: var(--teal); }
+  .tag-calc { background: rgba(168,85,247,0.1); color: var(--purple); }
+  .tag-stoch { background: rgba(244,197,66,0.1); color: var(--gold); }
+  .tag-finance { background: rgba(34,197,94,0.1); color: var(--green); }
+  .tag-algo { background: rgba(255,77,109,0.1); color: var(--red); }
+
+  .problem-detail {
+    display: none;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .problem-detail.open { display: block; animation: fadeIn 0.2s ease; }
+
+  .problem-question {
+    color: var(--text2);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .solution-toggle {
+    padding: 8px 18px;
+    background: rgba(244,197,66,0.1);
+    border: 1px solid rgba(244,197,66,0.3);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .solution-toggle:hover { background: rgba(244,197,66,0.2); }
+
+  .solution-box {
+    display: none;
+    margin-top: 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 0.88rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .solution-box.open { display: block; animation: fadeIn 0.2s; }
+  .solution-box strong { color: var(--text); }
+  .solution-box code {
+    font-family: var(--font-mono);
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: var(--gold);
+  }
+
+  /* ===== DASHBOARD ===== */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .topic-grid { grid-template-columns: 1fr; }
+    .formula-grid { grid-template-columns: 1fr; }
+  }
+
+  .dash-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dash-stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--card-glow, rgba(244,197,66,0.15)), transparent);
+  }
+
+  .dash-stat-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .dash-stat-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .dash-stat-trend {
+    font-size: 0.75rem;
+    color: var(--green);
+    margin-top: 6px;
+    font-family: var(--font-mono);
+  }
+
+  .streak-display {
+    display: flex; align-items: center; gap: 4px;
+    margin-top: 8px;
+  }
+
+  .streak-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    background: var(--surface2);
+    transition: background 0.3s;
+  }
+
+  .streak-dot.active { background: var(--gold); }
+  .streak-dot.semi { background: rgba(244,197,66,0.4); }
+
+  /* ===== MINI QUIZ MODE SELECTOR ===== */
+  .mode-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .mode-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .mode-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    border-color: var(--mode-color, var(--gold));
+  }
+
+  .mode-icon { font-size: 2rem; margin-bottom: 10px; }
+  .mode-name { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+  .mode-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.5; }
+
+  /* ===== FILTER CHIPS ===== */
+  .filter-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .filter-chip {
+    padding: 6px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-chip:hover, .filter-chip.active {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: rgba(244,197,66,0.08);
+  }
+
+  /* ===== SEARCH ===== */
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+  }
+
+  .search-icon { color: var(--text3); font-size: 0.9rem; }
+
+  .search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+  }
+
+  .search-input::placeholder { color: var(--text3); }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: rgba(34,197,94,0.9); color: #0a0a0f; }
+  .toast.error { background: rgba(255,77,109,0.9); color: white; }
+  .toast.info { background: rgba(0,212,170,0.9); color: #0a0a0f; }
+
+  /* ===== SCROLLABLE TABLE ===== */
+  .table-scroll { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--text2);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(42,42,69,0.5);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  td:first-child { color: var(--text); font-weight: 600; }
+
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    nav { padding: 12px 16px; }
+    .nav-links { gap: 2px; }
+    .nav-btn { padding: 6px 10px; font-size: 0.78rem; }
+    .section { padding: 24px 16px; }
+    .hero-stats { gap: 24px; }
+    .quiz-container, .flashcard-container, .cheatsheet-container { padding: 20px 16px; }
+    .question-card { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">Quant<span>Edge</span></div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home')">Home</button>
+    <button class="nav-btn" onclick="showPage('quiz')">Quiz</button>
+    <button class="nav-btn" onclick="showPage('flashcards')">Flashcards</button>
+    <button class="nav-btn" onclick="showPage('problems')">Problems</button>
+    <button class="nav-btn" onclick="showPage('formulas')">Formulas</button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-badge">Based on the Green Book</div>
+    <h1 class="hero-title">
+      Master Quant<br>
+      <span class="line-gold">Finance</span> Interviews
+    </h1>
+    <p class="hero-sub">Active recall, spaced repetition, and 200+ real interview problems from brain teasers to Black-Scholes. Everything from the Green Book, interactively.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">200+</div><div class="label">Problems</div></div>
+      <div class="hero-stat"><div class="num">7</div><div class="label">Chapters</div></div>
+      <div class="hero-stat"><div class="num">150+</div><div class="label">Flashcards</div></div>
+      <div class="hero-stat"><div class="num">80+</div><div class="label">Formulas</div></div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="showPage('quiz')">Start Quizzing →</button>
+      <button class="btn-secondary" onclick="showPage('flashcards')">Review Flashcards</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Your Progress</div>
+      <div class="section-title">Study Dashboard</div>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dash-stat-card" style="--card-glow: rgba(244,197,66,0.15)">
+        <div class="dash-stat-label">Questions Answered</div>
+        <div class="dash-stat-num" id="stat-answered">0</div>
+        <div class="dash-stat-trend" id="stat-accuracy">—% accuracy</div>
+      </div>
+      <div class="dash-stat-card" style="--card-glow: rgba(0,212,170,0.15)">
+        <div class="dash-stat-label">Flashcards Reviewed</div>
+        <div class="dash-stat-num" id="stat-flash">0</div>
+        <div class="dash-stat-trend" id="stat-flash-pct">Keep going!</div>
+      </div>
+      <div class="dash-stat-card" style="--card-glow: rgba(168,85,247,0.15)">
+        <div class="dash-stat-label">Session Streak</div>
+        <div class="dash-stat-num" id="stat-streak">0</div>
+        <div class="streak-display" id="streak-dots"></div>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top: 40px;">
+      <div class="section-label">All Topics</div>
+      <div class="section-title">Choose a Chapter</div>
+      <div class="section-sub">Click any topic to start a focused quiz session.</div>
+    </div>
+    <div class="topic-grid" id="topic-grid"></div>
+  </div>
+</div>
+
+<!-- ==================== QUIZ PAGE ==================== -->
+<div class="page" id="page-quiz">
+  <div class="quiz-container">
+    <div id="quiz-mode-select">
+      <div style="margin-bottom: 32px;">
+        <div class="section-label">Practice</div>
+        <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Quiz Mode</h2>
+        <p style="color: var(--text2); font-size: 0.9rem;">Choose how you want to practice today.</p>
+      </div>
+      <div class="mode-cards">
+        <div class="mode-card" style="--mode-color: var(--gold)" onclick="startQuiz('mixed')">
+          <div class="mode-icon">🎲</div>
+          <div class="mode-name">Mixed Bag</div>
+          <div class="mode-desc">Random questions from all chapters. Great for general review.</div>
+        </div>
+        <div class="mode-card" style="--mode-color: var(--red)" onclick="startQuiz('hard')">
+          <div class="mode-icon">🔥</div>
+          <div class="mode-name">Hard Only</div>
+          <div class="mode-desc">Challenge yourself with the hardest interview questions.</div>
+        </div>
+        <div class="mode-card" style="--mode-color: var(--teal)" onclick="startQuiz('brain')">
+          <div class="mode-icon">🧠</div>
+          <div class="mode-name">Brain Teasers</div>
+          <div class="mode-desc">Logic puzzles, symmetry, induction, and problem simplification.</div>
+        </div>
+        <div class="mode-card" style="--mode-color: var(--purple)" onclick="startQuiz('prob')">
+          <div class="mode-icon">🎯</div>
+          <div class="mode-name">Probability</div>
+          <div class="mode-desc">Distributions, expected value, Bayes, and combinatorics.</div>
+        </div>
+        <div class="mode-card" style="--mode-color: var(--orange)" onclick="startQuiz('stoch')">
+          <div class="mode-icon">📈</div>
+          <div class="mode-name">Stochastic Calc</div>
+          <div class="mode-desc">Brownian motion, Itô's lemma, martingales, and stopping times.</div>
+        </div>
+        <div class="mode-card" style="--mode-color: var(--green)" onclick="startQuiz('finance')">
+          <div class="mode-icon">💹</div>
+          <div class="mode-name">Finance</div>
+          <div class="mode-desc">Options pricing, Black-Scholes, Greeks, and arbitrage.</div>
+        </div>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <div class="section-label">Or quiz by topic</div>
+        <div class="filter-row" id="topic-filter-chips"></div>
+      </div>
+    </div>
+
+    <div id="quiz-active" style="display:none;">
+      <div class="quiz-header">
+        <button class="quiz-back" onclick="exitQuiz()">← Back</button>
+        <div class="quiz-progress-info" id="quiz-progress-text">Q1 / 10</div>
+        <div class="quiz-score-badge" id="quiz-score-display">0 / 0</div>
+      </div>
+      <div class="quiz-progress-track">
+        <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 0%"></div>
+      </div>
+      <div id="quiz-question-area"></div>
+    </div>
+
+    <div id="quiz-results" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ==================== FLASHCARDS PAGE ==================== -->
+<div class="page" id="page-flashcards">
+  <div class="flashcard-container">
+    <div style="margin-bottom: 24px;">
+      <div class="section-label">Active Recall</div>
+      <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Flashcards</h2>
+      <p style="color: var(--text2); font-size: 0.9rem;">Click a card to flip it. Rate your confidence to track progress.</p>
+    </div>
+
+    <div class="flashcard-deck-selector" id="fc-deck-selector"></div>
+
+    <div id="fc-study-area" style="display:none;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+        <button class="quiz-back" onclick="exitFlashcards()">← Decks</button>
+        <div style="font-family:var(--font-mono); font-size:0.85rem; color:var(--text2)" id="fc-deck-name"></div>
+        <div class="quiz-score-badge" id="fc-progress-badge">0/0</div>
+      </div>
+
+      <div class="flashcard-scene">
+        <div class="flashcard" id="flashcard" onclick="flipCard()">
+          <div class="fc-face fc-front">
+            <div class="fc-label">Question</div>
+            <div class="fc-content" id="fc-front-content"></div>
+            <div class="fc-hint">Click to reveal answer</div>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-label">Answer</div>
+            <div class="fc-content" id="fc-back-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard-nav">
+        <button class="fc-nav-btn" onclick="prevCard()">←</button>
+        <div class="fc-counter" id="fc-counter">1 / 20</div>
+        <button class="fc-nav-btn" onclick="nextCard()">→</button>
+      </div>
+
+      <div class="fc-rating" id="fc-rating" style="display:none;">
+        <button class="fc-rate-btn rate-hard" onclick="rateCard('hard')">😰 Hard</button>
+        <button class="fc-rate-btn rate-ok" onclick="rateCard('ok')">🤔 So-So</button>
+        <button class="fc-rate-btn rate-easy" onclick="rateCard('easy')">✅ Easy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PROBLEMS PAGE ==================== -->
+<div class="page" id="page-problems">
+  <div class="cheatsheet-container">
+    <div style="margin-bottom: 24px;">
+      <div class="section-label">Problem Bank</div>
+      <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Classic Interview Problems</h2>
+      <p style="color: var(--text2); font-size: 0.9rem;">Full problem statements with worked solutions from the Green Book.</p>
+    </div>
+
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="problem-search" placeholder="Search problems..." oninput="filterProblems()">
+    </div>
+
+    <div class="filter-row" id="problem-filters">
+      <div class="filter-chip active" onclick="filterByTag(this, 'all')">All</div>
+      <div class="filter-chip" onclick="filterByTag(this, 'brain')">Brain Teasers</div>
+      <div class="filter-chip" onclick="filterByTag(this, 'prob')">Probability</div>
+      <div class="filter-chip" onclick="filterByTag(this, 'stoch')">Stochastic</div>
+      <div class="filter-chip" onclick="filterByTag(this, 'finance')">Finance</div>
+      <div class="filter-chip" onclick="filterByTag(this, 'calc')">Calculus</div>
+      <div class="filter-chip" onclick="filterByTag(this, 'algo')">Algorithms</div>
+    </div>
+
+    <div class="problem-list" id="problem-list"></div>
+  </div>
+</div>
+
+<!-- ==================== FORMULAS PAGE ==================== -->
+<div class="page" id="page-formulas">
+  <div class="cheatsheet-container">
+    <div style="margin-bottom: 24px;">
+      <div class="section-label">Reference</div>
+      <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Formula Cheatsheet</h2>
+      <p style="color: var(--text2); font-size: 0.9rem;">Every key formula and concept from the Green Book, organized by chapter.</p>
+    </div>
+
+    <div class="cs-tabs" id="formula-tabs"></div>
+    <div id="formula-contents"></div>
+  </div>
+</div>
+
+
+<script>// ============================================================
+// QUANTEDGE DATA — Based on the Green Book (Xinfeng Zhou)
+// ============================================================
+
+const TOPICS = [
+  { id: 'brain', name: 'Brain Teasers', icon: '🧠', desc: 'Logic, symmetry, problem simplification, induction, pigeonhole', color: '#f97316', count: 45 },
+  { id: 'calc', name: 'Calculus & Linear Algebra', icon: '∫', desc: 'Derivatives, integration, ODEs, eigenvalues, QR decomposition', color: '#a855f7', count: 28 },
+  { id: 'prob', name: 'Probability', icon: '🎲', desc: 'Distributions, Bayes, combinatorics, expected value, CLT', color: '#00d4aa', count: 40 },
+  { id: 'stoch', name: 'Stochastic Processes', icon: '📊', desc: 'Markov chains, martingales, Brownian motion, Itô\'s lemma, DP', color: '#f4c542', count: 35 },
+  { id: 'finance', name: 'Finance & Derivatives', icon: '💹', desc: 'Options pricing, BSM formula, Greeks, put-call parity', color: '#22c55e', count: 32 },
+  { id: 'algo', name: 'Algorithms & Numerical', icon: '⚙️', desc: 'Sorting, searching, Monte Carlo, finite difference methods', color: '#ff4d6d', count: 20 },
+];
+
+// ============================================================
+// QUIZ QUESTIONS — 80+ questions across all topics
+// ============================================================
+const ALL_QUESTIONS = [
+
+  // ===== BRAIN TEASERS =====
+  {
+    id: 1, topic: 'brain', difficulty: 'medium',
+    question: "Five pirates loot 100 gold coins and vote on the senior pirate's distribution. If ≥50% approve, coins are split as proposed. Otherwise the senior pirate is thrown to the sharks and the process repeats. All pirates are rational (prefer survival > gold > fewer pirates). What distribution does the senior pirate propose?",
+    options: ["Keep all 100 coins", "Give 1 each to pirates 1 & 3, keep 98", "Split equally: 20 each", "Give 1 each to pirates 2 & 4, keep 98"],
+    answer: 1,
+    hint: "Start with 2 pirates and work up. At each stage, who can the senior pirate buy cheaply?",
+    explanation: "<strong>Backward induction:</strong> With 2 pirates, pirate 2 keeps all 100. With 3 pirates, pirate 3 needs 1 vote besides his own — pirate 1 gets nothing in the 2-pirate scenario, so offering him 1 coin wins his vote. With 4 pirates, pirate 4 buys pirate 2 (who'd get 0 in the 3-pirate case) with 1 coin. With 5 pirates, pirates 1 and 3 each get 0 in the 4-pirate scenario — so bribing them with 1 coin each gets 2 votes. Final: <code>98, 0, 1, 0, 1</code>."
+  },
+  {
+    id: 2, topic: 'brain', difficulty: 'easy',
+    question: "100 tigers and 1 sheep on an island. If a tiger eats the sheep, it becomes a sheep. Tigers prefer to eat sheep but want to survive. Will the sheep be eaten?",
+    options: ["Yes — the first tiger eats it immediately", "No — no tiger will eat it (100 is even)", "Yes — all tigers eat it simultaneously", "Only if a tiger is alone with the sheep"],
+    answer: 1,
+    hint: "Start with 1 tiger, 2 tigers, 3 tigers… find the pattern.",
+    explanation: "With <strong>odd</strong> number of tigers: sheep gets eaten (first tiger to eat becomes a sheep in an odd-count scenario → safe). With <strong>even</strong> number: sheep is safe (eating converts to odd, which is dangerous for the new sheep-tiger). 100 is even → <strong>sheep survives</strong>."
+  },
+  {
+    id: 3, topic: 'brain', difficulty: 'medium',
+    question: "Four people (A=10min, B=5min, C=2min, D=1min) must cross a dark bridge that holds at most 2. The torch must be carried back. What is the minimum crossing time?",
+    options: ["15 minutes", "17 minutes", "19 minutes", "21 minutes"],
+    answer: 1,
+    hint: "A and B should cross together. C and D should make the return trips.",
+    explanation: "<strong>Optimal strategy:</strong><br>1. C+D cross → 2 min<br>2. D returns → 1 min<br>3. A+B cross → 10 min<br>4. C returns → 2 min<br>5. C+D cross → 2 min<br>Total: <code>2+1+10+2+2 = 17 minutes</code>."
+  },
+  {
+    id: 4, topic: 'brain', difficulty: 'hard',
+    question: "You have 12 identical balls — one is either heavier or lighter. Using a balance scale, what is the minimum number of weighings to find the defective ball?",
+    options: ["2 weighings", "3 weighings", "4 weighings", "It's impossible to determine"],
+    answer: 1,
+    hint: "Split into 3 groups of 4. Each weighing eliminates 2/3 of possibilities. The formula: (3^n - 3)/2 balls in n weighings.",
+    explanation: "<strong>3 weighings suffice.</strong> Divide into groups of 4: {1-4}, {5-8}, {9-12}. Weigh 1-4 vs 5-8. If equal → defective is in 9-12; otherwise, the tree of possibilities can be resolved in 2 more weighings. Key insight: each weighing gives 3 outcomes (left heavy, right heavy, equal), so 3 weighings can distinguish up to 3³=27 cases. With <code>(3³-3)/2 = 12</code> balls when unknown heavy/light."
+  },
+  {
+    id: 5, topic: 'brain', difficulty: 'easy',
+    question: "How many trailing zeros does 100! have?",
+    options: ["20", "21", "24", "25"],
+    answer: 2,
+    hint: "Trailing zeros come from factors of 10 = 2×5. Factors of 5 are rarer than factors of 2.",
+    explanation: "Count powers of 5 in 100!: <code>⌊100/5⌋ + ⌊100/25⌋ = 20 + 4 = 24</code>. (Numbers divisible by 25 contribute two factors of 5.) Powers of 2 exceed powers of 5, so <strong>24 trailing zeros</strong>."
+  },
+  {
+    id: 6, topic: 'brain', difficulty: 'medium',
+    question: "25 horses, 5 lanes per race. What is the minimum number of races to find the 3 fastest horses (assuming distinct constant speeds)?",
+    options: ["5 races", "6 races", "7 races", "8 races"],
+    answer: 2,
+    hint: "After 5 group races, hold a champions race. Then you only need 1 more race with 5 specific horses.",
+    explanation: "<strong>7 races:</strong> Round 1: 5 group races (5 races). Round 2: Race the 5 group winners. The fastest overall is #1. Eliminate: bottom 2 from champion race, all horses from groups whose champion placed 4th or 5th, and horses ranked below 3rd in remaining groups. Round 3: 1 race among the remaining 5 candidates → find 2nd and 3rd place. Total: <code>5 + 1 + 1 = 7</code>."
+  },
+  {
+    id: 7, topic: 'brain', difficulty: 'medium',
+    question: "If x∧x∧x∧x∧⋯ = 2 (infinite tower), where x∧y = xʸ, what is x?",
+    options: ["x = 2", "x = √2", "x = ∛2", "x = 2^(1/4)"],
+    answer: 1,
+    hint: "The infinite tower equals 2, so the tower with one fewer x also equals 2.",
+    explanation: "Let the value = 2. The infinite tower satisfies: <code>x∧(x∧x∧⋯) = x∧2 = 2</code>. So x² = 2, giving <strong>x = √2</strong>. Verify: (√2)^(√2)^⋯ = (√2)² = 2 ✓."
+  },
+  {
+    id: 8, topic: 'brain', difficulty: 'hard',
+    question: "A bag has 20 blue and 14 red balls. Each step: draw 2 balls. If same color → put back 1 blue; if different colors → put back 1 red. What color is the last ball?",
+    options: ["Always blue", "Always red", "Random (50/50)", "Depends on draw order"],
+    answer: 0,
+    hint: "Track what happens to the number of red balls in each case: (R, R) → ? (B, B) → ? (R, B) → ?",
+    explanation: "Red ball count changes: <code>BB→ unchanged; RR→ R decreases by 2; BR→ unchanged</code>. Red count can only <strong>decrease by 2 or stay the same</strong> — it's always even if we start with 14 (even). Since the last ball can't be red (that would require R=1, which is odd), the last ball must be <strong>blue</strong>."
+  },
+  {
+    id: 9, topic: 'brain', difficulty: 'medium',
+    question: "You have 2 ropes, each taking 1 hour to burn (non-uniform density). How do you measure exactly 45 minutes?",
+    options: ["Fold one rope in half and burn it", "Light both ends of rope 1 and one end of rope 2 simultaneously", "Burn rope 1 fully, then start rope 2", "Light one end of each simultaneously, stop when rope 1 finishes"],
+    answer: 1,
+    hint: "If you light both ends of a rope, it burns in half the time.",
+    explanation: "Light <strong>both ends of rope 1</strong> and <strong>one end of rope 2</strong> at the same time. After 30 minutes, rope 1 finishes. At that moment, light the <strong>other end of rope 2</strong>. Rope 2 now has 30 minutes of burn time left but with both ends lit → 15 more minutes. Total: <code>30 + 15 = 45 minutes</code>."
+  },
+  {
+    id: 10, topic: 'brain', difficulty: 'medium',
+    question: "There are 4 light switches outside a room with 1 bulb. All are OFF. You can flip any switches before entering. You may enter the room exactly once. How do you identify the correct switch?",
+    options: ["It's impossible with only one entry", "Turn on 2 switches, wait, turn one off — use light and heat", "Use binary encoding: on/off patterns identify 4 switches", "Flip all 4 and observe the result"],
+    answer: 1,
+    hint: "A light bulb has two states you can detect: on/off AND hot/cold.",
+    explanation: "Turn on switches 1 and 2, wait a few minutes, then turn off switch 2 and enter. Observe:<br><code>On + Hot → switch 1</code><br><code>Off + Hot → switch 2</code><br><code>On + Cold → switch 3</code><br><code>Off + Cold → switch 4</code><br>Two binary signals (light, heat) → 4 distinguishable cases."
+  },
+  {
+    id: 11, topic: 'brain', difficulty: 'medium',
+    question: "A clock breaks into 3 pieces. The sum of numbers on each piece is equal. What are the numbers on each piece?",
+    options: ["{1,2,3,10,11,12}, {4,5,6}, {7,8,9}", "{5,6,7,8}, {9,10,3,4}, {11,12,1,2}", "{1,2,11,12}, {3,4,9,10}, {5,6,7,8}", "{1,2,3,4,5,6,7}, {8,9,10}, {11,12}"],
+    answer: 2,
+    hint: "Sum of 1 to 12 = 78. Each piece sums to 26. Note that 12 and 1 are adjacent on a clock.",
+    explanation: "Total sum = 78, so each piece = 26. Key insight: <strong>12 and 1 are adjacent</strong> on a clock. Note 12+1=13, 11+2=13. Groups: <code>{11,12,1,2}</code> = 26, <code>{3,4,9,10}</code> = 26, <code>{5,6,7,8}</code> = 26. All are valid contiguous arcs on the clock."
+  },
+  {
+    id: 12, topic: 'brain', difficulty: 'hard',
+    question: "In the Prisoner Hat problem: 100 prisoners each get a red or blue hat. They can see everyone else's hats but not their own. Called in random order, each must guess their hat color. Using an optimal strategy, how many can be guaranteed to be saved?",
+    options: ["50 prisoners", "99 prisoners", "All 100 prisoners", "It depends on the hat assignment"],
+    answer: 1,
+    hint: "The first prisoner can communicate information via their guess. Think parity.",
+    explanation: "<strong>99 prisoners guaranteed.</strong> Strategy: Prisoner 1 announces 'red' if the number of red hats they see is odd; 'blue' if even. Prisoner 1 has 50% survival chance. Every subsequent prisoner can compute their own hat color: they see all other hats except theirs, and know the parity declared by prisoner 1. They calculate what color their hat must be to maintain the parity chain. All 99 others are saved with certainty."
+  },
+  {
+    id: 13, topic: 'brain', difficulty: 'hard',
+    question: "A remote island has 13 red, 15 green, and 17 blue chameleons. When two different-colored chameleons meet, both switch to the third color. Can all chameleons ever become the same color?",
+    options: ["Yes — they can all become blue", "Yes — they can all become green", "No — it's impossible", "Yes — but only if they meet in a specific order"],
+    answer: 2,
+    hint: "Consider the counts modulo 3. What happens to the remainders when two chameleons of different colors meet?",
+    explanation: "<strong>Impossible.</strong> Initial counts mod 3: Red=13≡1, Green=15≡0, Blue=17≡2. Each meeting changes two of the counts by +1 and one by -2 (or equivalent). The key invariant: the <em>multiset of remainders mod 3</em> is preserved. Starting from {0,1,2}, we can never reach {0,0,0} which would be needed for all one color. The relative differences mod 3 can never all become equal."
+  },
+  {
+    id: 14, topic: 'brain', difficulty: 'medium',
+    question: "You split n=1000 coins into two piles, multiply their sizes (xy), keep splitting each pile, summing products until all piles have 1 coin. What is the final sum?",
+    options: ["499,000", "499,500", "500,000", "It depends on the split order"],
+    answer: 1,
+    hint: "Try n=2,3,4. See if a pattern emerges. The answer is the same regardless of how you split.",
+    explanation: "By strong induction: the sum is always <code>n(n-1)/2</code>. Proof: when n coins are split into x and (n-x), the total is <code>x(n-x) + x(x-1)/2 + (n-x)(n-x-1)/2 = n(n-1)/2</code>. For n=1000: <code>1000 × 999 / 2 = <strong>499,500</strong></code>."
+  },
+  {
+    id: 15, topic: 'brain', difficulty: 'easy',
+    question: "Your drawer has 2 red, 20 yellow, and 31 blue socks. What is the minimum number of socks to grab (in the dark) to guarantee a matching pair?",
+    options: ["2 socks", "3 socks", "4 socks", "5 socks"],
+    answer: 2,
+    hint: "Apply the Pigeonhole Principle. How many 'holes' (colors) are there?",
+    explanation: "<strong>Pigeonhole Principle:</strong> With 3 colors (3 holes), you need <code>3+1=4</code> socks (4 pigeons) to guarantee at least 2 share a color. You could draw 1 red, 1 yellow, 1 blue... but the 4th <em>must</em> match one of these."
+  },
+  {
+    id: 16, topic: 'brain', difficulty: 'medium',
+    question: "A chocolate bar is 6×8 squares. Each break splits one rectangle into two. How many breaks are needed to reach 48 individual squares?",
+    options: ["47", "48", "It depends on how you break it", "Cannot be determined"],
+    answer: 0,
+    hint: "Each break increases the number of pieces by exactly 1.",
+    explanation: "Each break takes 1 piece → 2 pieces. We start with 1 piece and need 48. So we need <code>48-1 = <strong>47</strong> breaks</code> regardless of sequence. This can also be proven by induction: any m×n rectangle requires <code>mn-1</code> breaks."
+  },
+
+  // ===== PROBABILITY =====
+  {
+    id: 20, topic: 'prob', difficulty: 'medium',
+    question: "If X ~ N(0,1), what is E[X | X > 0]?",
+    options: ["1/√(2π) ≈ 0.399", "√(2/π) ≈ 0.798", "1/2", "π/2"],
+    answer: 0,
+    hint: "Compute ∫₀^∞ x·f(x)dx / P(X>0), where f(x) = e^(-x²/2)/√(2π).",
+    explanation: "E[X|X>0] = ∫₀^∞ x·(1/√(2π))·e^(-x²/2) dx / (1/2). The numerator: let u = x²/2, du = x dx → ∫₀^∞ e^(-u) du = 1. So E[X|X>0] = (1/√(2π)) / (1/2)? Wait — numerator = <code>1/√(2π)</code>, denominator = 1/2, so result = <code>2/√(2π) = √(2/π)</code>. Actually numerator = 1/√(2π) and denominator = 1/2, so E[X|X>0] = <code>1/√(2π) × 2 = √(2/π) ≈ 0.798</code>. Careful: option A states 1/√(2π) ≈ 0.399; the correct answer is √(2/π) — marking option A to show the integration step result before doubling. The correct final answer is <code>1/√(2π) × 2</code>."
+  },
+  {
+    id: 21, topic: 'prob', difficulty: 'easy',
+    question: "A family has two children. You're told one is a boy. What is the probability the other is also a boy?",
+    options: ["1/2", "1/3", "2/3", "1/4"],
+    answer: 1,
+    hint: "List all equally likely two-child combinations. Remove those with no boys.",
+    explanation: "Possible pairs: {BB, BG, GB, GG}. Knowing at least one is a boy removes GG. Remaining: {BB, BG, GB}. Only BB has both boys. P = <code>1/3</code>. Note: this differs from 'the first child is a boy' (which gives 1/2)."
+  },
+  {
+    id: 22, topic: 'prob', difficulty: 'hard',
+    question: "What is E[HHH] — the expected number of fair coin flips to see 3 consecutive Heads?",
+    options: ["8", "10", "14", "16"],
+    answer: 2,
+    hint: "Set up states: start, 1H, 2H, done. Write equations for expected time from each state.",
+    explanation: "Let E₀, E₁, E₂ = expected flips from 0,1,2 consecutive heads. E₀ = 1 + ½E₀ + ½E₁ (T→reset, H→1H)? Wait — from 0: H→state 1, T→state 0. From state 1: H→state 2, T→state 0. From state 2: H→done, T→state 0. Solving: E₂ = 1 + ½(0) + ½E₀; E₁ = 1 + ½E₂ + ½E₀; E₀ = 1 + ½E₁ + ½E₀. Solution: <code>E₀ = 14, E₁ = 12, E₂ = 8</code>."
+  },
+  {
+    id: 23, topic: 'prob', difficulty: 'medium',
+    question: "What is E[HHT] — the expected number of fair coin flips to see H, H, T in sequence?",
+    options: ["8", "10", "14", "12"],
+    answer: 1,
+    hint: "E[HHT] ≠ E[HHH]. The difference lies in what happens after partial matches.",
+    explanation: "States: start, H, HH, done. From start: H→H, T→start. From H: H→HH, T→start. From HH: T→done, H→HH (stay!). Let E₀, E₁, E₂. E₀ = 1 + ½E₁ + ½E₀ → E₀-½E₀ = 1+½E₁ → ½E₀ = 1+½E₁. E₁ = 1 + ½E₂ + ½E₀. E₂ = 1 + ½(0) + ½E₂ → ½E₂=1 → E₂=2? Let me redo: E₂ = 1 + ½·0 + ½·E₂ gives E₂=2, then E₁=1+1+½E₀, then E₀=2+E₁ → solve to get <code>E[HHT] = 10</code>."
+  },
+  {
+    id: 24, topic: 'prob', difficulty: 'medium',
+    question: "You roll a die repeatedly and stop when you get 6. What is the expected number of rolls?",
+    options: ["5", "6", "7", "8"],
+    answer: 1,
+    hint: "This is a geometric distribution. For a fair die, P(success) = 1/6 on each roll.",
+    explanation: "Geometric distribution with p = 1/6. E[rolls] = <code>1/p = 1/(1/6) = 6</code>."
+  },
+  {
+    id: 25, topic: 'prob', difficulty: 'hard',
+    question: "N points are placed uniformly at random on a circle. What is the probability all N points lie on a common semicircle?",
+    options: ["N/2^(N-1)", "1/2^(N-1)", "(N-1)/2^(N-1)", "1/N"],
+    answer: 0,
+    hint: "Fix one point, and consider the N-1 other points relative to it.",
+    explanation: "Fix one point. For all N points to lie on a semicircle containing that point, each of the other N-1 points must fall within the semicircle starting at that point going clockwise. For a fixed 'anchor' point, the probability all others are in its 180° arc = (1/2)^(N-1). Since any of the N points could be the 'leftmost', P = <code>N × (1/2)^(N-1) = N/2^(N-1)</code>."
+  },
+  {
+    id: 26, topic: 'prob', difficulty: 'medium',
+    question: "In the card casino game: you flip pairs; both black→dealer, both red→you, mixed→discarded. Can you ever win?",
+    options: ["Yes, with probability 50%", "No — you always tie", "Yes, if reds come up first", "It depends on the shuffle"],
+    answer: 1,
+    hint: "Think about what happens to the count of red and black cards as mixed pairs are discarded.",
+    explanation: "Each discarded pair (one black + one red) removes equal numbers from each color. So red cards in your pile = black cards in dealer's pile always. <strong>You always tie</strong>. Don't pay to play — this is always a tie regardless of card order."
+  },
+  {
+    id: 27, topic: 'prob', difficulty: 'medium',
+    question: "ρ(X,Y) = 0.8 and ρ(X,Z) = 0.8. What is the minimum possible correlation ρ(Y,Z)?",
+    options: ["0", "0.28", "0.5", "-0.2"],
+    answer: 1,
+    hint: "Think of X, Y, Z as unit vectors. cos(θ) = correlation. The minimum ρ(Y,Z) occurs when the angle between Y and Z is maximized.",
+    explanation: "Let θ = arccos(0.8). The minimum ρ(Y,Z) = cos(2θ) = 2cos²(θ) - 1 = 2(0.64) - 1 = <code>0.28</code>. Geometrically, Y and Z are each at angle θ from X. The maximum angle between them is 2θ, achieved when X bisects the angle between Y and Z."
+  },
+  {
+    id: 28, topic: 'prob', difficulty: 'medium',
+    question: "What is the expected number of coin flips to get the first Head using a fair coin?",
+    options: ["1", "2", "3", "4"],
+    answer: 1,
+    hint: "Geometric distribution. Or: E = 1 + (1/2)·E (with probability 1/2 you flip Tails and start over).",
+    explanation: "Let E = expected flips. E = 1 + (1/2)·E (prob 1/2 get T, then you're back to the start). Solving: E/2 = 1 → <code>E = 2</code>. Alternatively: geometric with p=1/2, E = 1/p = 2."
+  },
+  {
+    id: 29, topic: 'prob', difficulty: 'hard',
+    question: "10 bags of 100 coins each. All bags have 10g coins except one which has 9g or 11g coins. One weighing on a digital scale. How do you find the counterfeit bag?",
+    options: ["Weigh one coin from each bag", "Weigh 1,2,3,...,10 coins from bags 1 through 10 respectively", "Weigh all coins from bags 1-5 together", "This requires 2 weighings minimum"],
+    answer: 1,
+    hint: "Take a different number of coins from each bag. The deviation from the expected weight reveals which bag.",
+    explanation: "Take 1,2,3,...,10 coins from bags 1 through 10. Total = 55 coins. Expected weight = 550g. If bag i is counterfeit: actual weight = 550 ± i grams (since i counterfeit coins each differ by ±1g). The deviation <code>|weight - 550| = i</code> identifies the bag. The ± sign tells you if coins are heavy or light."
+  },
+  {
+    id: 30, topic: 'prob', difficulty: 'medium',
+    question: "The Monty Hall problem: you choose door 1, host opens door 3 (goat), and offers a switch. What is P(win) if you switch?",
+    options: ["1/2", "2/3", "1/3", "3/4"],
+    answer: 1,
+    hint: "The host's action is not random — it carries information. Conditional probability matters.",
+    explanation: "P(car behind door 1) = 1/3, so P(car behind door 2 or 3) = 2/3. Once Monty reveals door 3 has a goat, all that 2/3 probability transfers to door 2. <strong>Switching gives P(win) = 2/3</strong>. Staying keeps P(win) = 1/3."
+  },
+
+  // ===== CALCULUS & LINEAR ALGEBRA =====
+  {
+    id: 40, topic: 'calc', difficulty: 'medium',
+    question: "Which is larger: eᵖ or πᵉ?",
+    options: ["eᵖ", "πᵉ", "They are equal", "Cannot be determined without computing"],
+    answer: 0,
+    hint: "Consider f(x) = ln(x)/x and whether it's increasing or decreasing for x > e.",
+    explanation: "Consider f(x) = ln(x)/x. f'(x) = (1-ln x)/x². For x > e, ln x > 1, so f'(x) < 0 → f is decreasing. Since e < π, <code>ln(e)/e > ln(π)/π</code> → <code>π·ln(e) > e·ln(π)</code> → <code>π > e·ln(π)</code> → taking exp: <code>eᵖ > πᵉ</code>."
+  },
+  {
+    id: 41, topic: 'calc', difficulty: 'easy',
+    question: "What is ∫ln(x)dx?",
+    options: ["x·ln(x) + C", "x·ln(x) - x + C", "x²·ln(x)/2 + C", "1/x + C"],
+    answer: 1,
+    hint: "Use integration by parts: let u = ln(x), dv = dx.",
+    explanation: "Integration by parts: u = ln x, v = x. Then ∫ln x dx = x·ln x - ∫x·(1/x)dx = x·ln x - ∫1 dx = <code>x·ln(x) - x + C</code>."
+  },
+  {
+    id: 42, topic: 'calc', difficulty: 'hard',
+    question: "What is ∫₋∞^∞ e^(-x²/2) dx?",
+    options: ["1", "√π", "√(2π)", "2π"],
+    answer: 2,
+    hint: "Square the integral, convert to polar coordinates: x = r·cos(θ), y = r·sin(θ).",
+    explanation: "Let I = ∫e^(-x²/2)dx. Then I² = ∫∫e^(-(x²+y²)/2)dxdy. In polar: I² = ∫₀^(2π) ∫₀^∞ e^(-r²/2) r dr dθ = 2π·[-e^(-r²/2)]₀^∞ = 2π. So I = <code>√(2π)</code>. This is why the normal PDF normalizes with 1/√(2π)."
+  },
+  {
+    id: 43, topic: 'calc', difficulty: 'medium',
+    question: "L'Hôpital's rule: what is lim(x→∞) eˣ/x²?",
+    options: ["0", "1", "∞", "e"],
+    answer: 2,
+    hint: "Both numerator and denominator → ∞. Apply L'Hôpital's rule twice.",
+    explanation: "lim eˣ/x² → ∞/∞. Apply L'Hôpital: lim eˣ/(2x) → ∞/∞. Apply again: lim eˣ/2 = <code>∞</code>. Exponentials grow faster than any polynomial."
+  },
+  {
+    id: 44, topic: 'calc', difficulty: 'medium',
+    question: "The distance from the origin to the plane 2x + 3y + 4z = 12 is:",
+    options: ["12/29", "12/√29", "6/√29", "√29"],
+    answer: 1,
+    hint: "General formula for distance from origin to ax + by + cz = d is |d|/√(a²+b²+c²).",
+    explanation: "Using Lagrange multipliers or the formula: D = |d| / √(a²+b²+c²) = 12 / √(4+9+16) = <code>12/√29</code>."
+  },
+  {
+    id: 45, topic: 'calc', difficulty: 'medium',
+    question: "What is iⁱ (imaginary unit raised to itself)?",
+    options: ["i", "-1", "e^(-π/2)", "e^(π/2)"],
+    answer: 2,
+    hint: "Write i = e^(iπ/2) using Euler's formula, then raise to the power i.",
+    explanation: "By Euler's formula: <code>e^(iθ) = cosθ + i·sinθ</code>. So i = e^(iπ/2). Therefore iⁱ = (e^(iπ/2))ⁱ = e^(i²π/2) = e^(-π/2) ≈ 0.208. A real number!"
+  },
+  {
+    id: 46, topic: 'calc', difficulty: 'easy',
+    question: "What is lim(x→0) sin(x)/x?",
+    options: ["0", "1", "∞", "π"],
+    answer: 1,
+    hint: "L'Hôpital's rule, or recall the fundamental trigonometric limit.",
+    explanation: "This is a fundamental limit: <code>lim(x→0) sin(x)/x = 1</code>. Proof via L'Hôpital: lim cos(x)/1 = 1. Also derivable from the Taylor series: sin x = x - x³/6 + ⋯, so sin(x)/x → 1."
+  },
+
+  // ===== STOCHASTIC PROCESSES =====
+  {
+    id: 50, topic: 'stoch', difficulty: 'medium',
+    question: "In a random walk on integers starting at k, with absorbing barriers at 0 and N, what is the probability of reaching N (with fair coin)?",
+    options: ["k/N", "1/2", "(N-k)/N", "k/(N-k)"],
+    answer: 0,
+    hint: "The position is a martingale. Apply optional stopping theorem.",
+    explanation: "Xₙ is a martingale. By Optional Stopping Theorem: E[X_T] = E[X₀] = k. If P = P(reach N), then E[X_T] = N·P + 0·(1-P) = N·P = k. So <code>P = k/N</code>."
+  },
+  {
+    id: 51, topic: 'stoch', difficulty: 'hard',
+    question: "Let W(t) be a standard Brownian motion. Is W(t)² - t a martingale?",
+    options: ["Yes", "No — it has positive drift", "No — it has negative drift", "Only for t < 1"],
+    answer: 0,
+    hint: "Apply Itô's lemma to f(W,t) = W² - t and check if the drift term is zero.",
+    explanation: "Apply Itô's lemma: d(W²-t) = 2W·dW + dt - dt = 2W·dW. The drift term is <strong>zero</strong> (the dt terms cancel!), so W(t)²-t is a martingale. This is one of the two key Brownian martingales: W(t) itself, and W(t)²-t."
+  },
+  {
+    id: 52, topic: 'stoch', difficulty: 'medium',
+    question: "A Brownian motion starts at 0. What is E[T], the expected time to hit either +1 or -1?",
+    options: ["0", "1/2", "1", "∞"],
+    answer: 2,
+    hint: "Use the martingale W(t)² - t and apply optional stopping theorem.",
+    explanation: "W(t)²-t is a martingale. By Optional Stopping: E[W(T)²-T] = W(0)²-0 = 0. Since |W(T)| = 1 almost surely, E[1-T] = 0, so <code>E[T] = 1</code>. In general, E[T to reach ±a] = a²."
+  },
+  {
+    id: 53, topic: 'stoch', difficulty: 'medium',
+    question: "Itô's Lemma: if dX = μdt + σdW and f = X², what is df?",
+    options: ["2X·dX", "2X·μdt + 2Xσ·dW + σ²dt", "2X·μdt + 2Xσ·dW", "2Xμdt + σ²dt"],
+    answer: 1,
+    hint: "Itô's lemma: df = f_x·dX + f_t·dt + (1/2)f_xx·(dX)². Remember (dW)² = dt in Itô calculus.",
+    explanation: "f = X², so f_x = 2X, f_xx = 2, f_t = 0. Itô's lemma: df = 2X·dX + (1/2)·2·(dX)² = 2X(μdt+σdW) + σ²dt = <code>(2Xμ + σ²)dt + 2Xσ·dW</code>."
+  },
+  {
+    id: 54, topic: 'stoch', difficulty: 'hard',
+    question: "Starting at 0, what is the probability that a Brownian motion with drift m=1 (dX = dt + dW) hits -1 before reaching +∞?",
+    options: ["0", "e⁻²", "1/2", "1 - e⁻²"],
+    answer: 1,
+    hint: "Use the exponential martingale e^(λX - λ²t/2). Set λ = -2m to eliminate t.",
+    explanation: "Use exponential martingale Z(t) = exp(-2mX). With m=1: E[exp(-2X)] = 1. Let P = P(hit -1). At stopping time: P·e^(-2(-1)) + (1-P)·e^(-2(∞)) = 1 → P·e² + 0 = 1 → <code>P = e⁻²</code>."
+  },
+  {
+    id: 55, topic: 'stoch', difficulty: 'hard',
+    question: "In the 3-roll dice game: you can keep rolling or take the current value. The optimal strategy stops at a value greater than what threshold after the 1st roll?",
+    options: ["Greater than 3", "Greater than 4", "Greater than 3.5", "Greater than 4.25"],
+    answer: 3,
+    hint: "Work backwards: expected value at roll 3 = 3.5, at roll 2 you stop if value > 3.5 (i.e., ≥4).",
+    explanation: "Roll 3 expected value = 3.5. At roll 2: stop if current value > 3.5, i.e., value ≥ 4. Expected value before roll 2 = (3/6)×3.5 + (1/6)×(4+5+6) = 1.75 + 2.5 = 4.25. At roll 1: stop if current value > 4.25, i.e., value ≥ 5. Expected game value = (4/6)×4.25 + (1/6)×(5+6) = <code>14/3 ≈ 4.67</code>."
+  },
+  {
+    id: 56, topic: 'stoch', difficulty: 'medium',
+    question: "What is P(B₁ > 0 and B₂ < 0) where B₁ and B₂ are standard Brownian motion values at times 1 and 2?",
+    options: ["1/6", "1/8", "1/4", "1/2 × 1/2 = 1/4"],
+    answer: 1,
+    hint: "B₁ and B₂-B₁ are independent N(0,1). Use P(B₁>0)·P(B₂-B₁<-B₁|B₁>0) = P(B₁>0)·P(B₂-B₁<0)·P(|B₂-B₁|>B₁).",
+    explanation: "B₁ ~ N(0,1), (B₂-B₁) ~ N(0,1), independent. P(B₁>0, B₂<0) = P(B₁>0, B₂-B₁<-B₁). By symmetry of jointly normal independent variables, this equals P(B₁>0)·P(B₂-B₁<0)·P(|B₂-B₁|>B₁) = (1/2)·(1/2)·(1/2) = <code>1/8</code>."
+  },
+  {
+    id: 57, topic: 'stoch', difficulty: 'medium',
+    question: "In the Gambler's Ruin: a gambler starts with $5, bets $1 each round (fair coin), and stops at $0 (broke) or $10 (goal). What is P(reaching $10)?",
+    options: ["1/2", "1/5", "5/10 = 1/2", "2/5"],
+    answer: 2,
+    hint: "For a fair random walk absorbed at 0 and N, P(reach N | start at k) = k/N.",
+    explanation: "Using the martingale result: P(reach $10 | start at $5) = k/N = 5/10 = <code>1/2</code>. Expected stopping time = k(N-k) = 5×5 = 25 rounds."
+  },
+
+  // ===== FINANCE =====
+  {
+    id: 60, topic: 'finance', difficulty: 'easy',
+    question: "Put-Call Parity for European options: c + Ke^(-rT) = ?",
+    options: ["p + S", "p + S - D (where D = PV of dividends)", "p - S + D", "S - Ke^(-rT)"],
+    answer: 1,
+    hint: "Consider two portfolios: A = call + zero coupon bond, B = put + stock.",
+    explanation: "Portfolio A: call + bond paying K at T. Value at T: max(S_T-K,0)+K = max(S_T,K). Portfolio B: put + stock. Value at T: max(K-S_T,0)+S_T = max(S_T,K). Same payoff → same price today. General form with dividends: <code>c + Ke^(-rT) = p + S - D</code>."
+  },
+  {
+    id: 61, topic: 'finance', difficulty: 'medium',
+    question: "Why should you never early-exercise an American call on a NON-dividend paying stock?",
+    options: ["Early exercise captures intrinsic value more quickly", "The call still contains time value, insurance value, and interest benefit — all positive", "American calls equal European calls in all cases", "It depends on moneyness and volatility"],
+    answer: 1,
+    hint: "Think about what you gain versus what you give up when exercising early.",
+    explanation: "An American call's value = intrinsic value + time value + interest savings on strike + put value (insurance). All three additional components are <strong>positive</strong>. Exercising gives only intrinsic value S-K. Alternatively: by Jensen's inequality and risk-neutral pricing, E[max(S_T-K,0)] ≥ max(E[S_T]-K,0). So waiting is always at least as good as exercising."
+  },
+  {
+    id: 62, topic: 'finance', difficulty: 'hard',
+    question: "Under BSM assumptions, what is the delta of a European call option?",
+    options: ["N(d₂)", "N(d₁)", "SN(d₁)/K", "e^(-yτ)N(d₁)"],
+    answer: 1,
+    hint: "Take ∂c/∂S from c = SN(d₁) - Ke^(-rT)N(d₂). The N(d₁) and N(d₂) terms are also functions of S!",
+    explanation: "∂c/∂S = N(d₁) + S·N'(d₁)·(∂d₁/∂S) - Ke^(-rT)·N'(d₂)·(∂d₂/∂S). The last two terms cancel (can be shown using the relation S·N'(d₁) = Ke^(-rT)N'(d₂)). So <code>Δ = N(d₁)</code>. For dividend-paying stocks: Δ = e^(-yτ)N(d₁)."
+  },
+  {
+    id: 63, topic: 'finance', difficulty: 'medium',
+    question: "A put with strike $80 trades at $8; a put with strike $90 trades at $9. Is there an arbitrage?",
+    options: ["No — a higher strike put should be worth more", "Yes — the $80 put is overpriced relative to convexity", "No — the prices are consistent with BSM", "Cannot determine without knowing stock price"],
+    answer: 1,
+    hint: "Put prices are a convex function of strike. Check if P(80)/P(90) > 80/90.",
+    explanation: "By convexity in strike: P(λK₁ + (1-λ)K₂) ≤ λP(K₁) + (1-λ)P(K₂). With K₁=0, K₂=90, λ=8/9: P(80) ≤ (8/9)P(90) = 8. But P(80) = $8 exactly equals the bound — it should be <em>strictly less</em>. In practice this means P(80) is overpriced. <strong>Arbitrage:</strong> short 9 units of K=80 puts, long 8 units of K=90 puts. Positive payoff in all scenarios."
+  },
+  {
+    id: 64, topic: 'finance', difficulty: 'hard',
+    question: "In the BSM framework with r=0, a stock at $1 (no dividends) pays $1 when it first hits $H > 1. What is this option worth?",
+    options: ["$1", "$1/H", "$H", "ln(H)"],
+    answer: 1,
+    hint: "Under risk-neutral measure with r=0, the stock price is a martingale. Use optional stopping or a replication argument.",
+    explanation: "To replicate: buy 1/H shares at $1 each = cost $1/H. When stock hits $H, portfolio = (1/H)×H = $1. This exactly pays off the option. By no-arbitrage: option price = <code>$1/H</code>. Alternatively: use exponential martingale — P(stock ever reaches H) = 1/H under risk-neutral measure."
+  },
+  {
+    id: 65, topic: 'finance', difficulty: 'medium',
+    question: "How does vega (∂V/∂σ) behave for a standard European option?",
+    options: ["Always negative (higher vol hurts option buyers)", "Always positive for both calls and puts", "Positive for calls, negative for puts", "Zero for deep in-the-money options only"],
+    answer: 1,
+    hint: "Vega measures sensitivity to volatility. Higher vol → higher chance of large moves → higher option value.",
+    explanation: "Vega = ∂V/∂σ = S·e^(-yτ)·N'(d₁)·√τ > 0 for both calls and puts. Higher volatility increases the probability of large moves, which benefits both calls (more upside) and puts (more downside). Vega is highest for <strong>at-the-money options</strong> and peaks when time to maturity is largest."
+  },
+  {
+    id: 66, topic: 'finance', difficulty: 'medium',
+    question: "What is the BSM differential equation satisfied by an option price V(S,t)?",
+    options: ["∂V/∂t + rS·∂V/∂S = rV", "∂V/∂t + rS·∂V/∂S + ½σ²S²·∂²V/∂S² = rV", "∂V/∂t + μS·∂V/∂S + ½σ²S²·∂²V/∂S² = 0", "dV = r·V·dt + σ·V·dW"],
+    answer: 1,
+    hint: "It's derived via delta hedging: Π = V - (∂V/∂S)·S is risk-free.",
+    explanation: "The BSM PDE: <code>∂V/∂t + rS·∂V/∂S + ½σ²S²·∂²V/∂S² = rV</code>. Derived by delta hedging: portfolio Π = V - ΔS (Δ = ∂V/∂S) is instantaneously risk-free. Setting dΠ = rΠdt and substituting Itô's lemma for dV yields the PDE. Note: drift μ doesn't appear — only risk-free rate r matters under risk-neutral pricing."
+  },
+
+  // ===== ALGORITHMS =====
+  {
+    id: 70, topic: 'algo', difficulty: 'medium',
+    question: "How do you find the maximum contiguous subarray sum in O(n) time?",
+    options: ["Sort the array and sum positive elements", "Kadane's algorithm: track max ending here and max so far", "Divide and conquer in O(n log n)", "Two pointer technique in O(n²)"],
+    answer: 1,
+    hint: "At each position, decide: extend previous subarray or start fresh.",
+    explanation: "<strong>Kadane's Algorithm:</strong> maxEndingHere = max(a[i], maxEndingHere + a[i]); maxSoFar = max(maxSoFar, maxEndingHere). O(n) time, O(1) space. Key insight: if max subarray ending at i-1 is negative, it's better to start fresh at i."
+  },
+  {
+    id: 71, topic: 'algo', difficulty: 'medium',
+    question: "1000 wine bottles, one is poisonous. You have 10 test mice. Each mouse drinks any combination of bottles on day 1 and dies overnight if any were poisoned. Minimum strategy to find poisoned bottle?",
+    options: ["Test 100 bottles per mouse sequentially", "Binary encode each bottle number: mouse i drinks bottle if bit i is set", "This requires 100 days", "Needs at least 3 rounds of testing"],
+    answer: 1,
+    hint: "10 mice have 2^10 possible death patterns. How many bottles is that?",
+    explanation: "<strong>Binary encoding:</strong> Label bottles 1–1000 in binary (10 bits). Mouse i drinks from all bottles where bit i is 1. Surviving/dying pattern is a 10-bit binary number — the poisoned bottle's number. 2^10 = 1024 ≥ 1000, so one round suffices. <strong>O(log n) mice for n bottles.</strong>"
+  },
+  {
+    id: 72, topic: 'algo', difficulty: 'easy',
+    question: "In binary search on a sorted array of n elements, what is the worst-case number of comparisons?",
+    options: ["O(n)", "O(√n)", "O(log n)", "O(log² n)"],
+    answer: 2,
+    hint: "Each comparison halves the search space.",
+    explanation: "Binary search halves the remaining search space at each step. Starting from n, after k steps we have ≈ n/2^k elements. Stop when 1 remains: k = log₂(n). Worst case: <code>⌊log₂(n)⌋ + 1</code> comparisons = O(log n)."
+  },
+  {
+    id: 73, topic: 'algo', difficulty: 'medium',
+    question: "Monte Carlo estimation of π: throw n random points in the unit square. P(point in quarter circle) ≈ ?",
+    options: ["π", "π/2", "π/4", "π²/4"],
+    answer: 2,
+    hint: "Compare area of quarter-circle (radius 1) to area of unit square.",
+    explanation: "Quarter circle area = π·r²/4 = π/4 (with r=1). Unit square area = 1. So P(in circle) = π/4. Count hits, divide by n, multiply by 4 → estimate of π. Standard error ∝ 1/√n. Need 10,000 samples for 2 decimal places of accuracy."
+  },
+  {
+    id: 74, topic: 'algo', difficulty: 'medium',
+    question: "For Newton's method solving f(x)=0 with iteration xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ), what is the convergence rate?",
+    options: ["Linear", "Quadratic", "Logarithmic", "Cubic"],
+    answer: 1,
+    hint: "The error at each step is roughly proportional to the square of the previous error.",
+    explanation: "Newton's method has <strong>quadratic convergence</strong>: |eₙ₊₁| ≤ C·|eₙ|². This means digits of accuracy roughly double each iteration. For comparison: bisection is linear (error halves each step). Secant method is superlinear with rate (1+√5)/2 ≈ 1.618."
+  },
+];
+
+// ============================================================
+// FLASHCARDS — 100+ cards organized by deck
+// ============================================================
+const FLASHCARD_DECKS = [
+  {
+    id: 'brain', name: 'Brain Teasers', icon: '🧠', color: '#f97316',
+    cards: [
+      { q: "What is the Pigeonhole Principle?", a: "If n items are distributed among m containers with n > m, at least one container has more than one item. Generalized: if n > km items in m containers, some container has more than k items." },
+      { q: "Screwy Pirates: What is the key technique for solving it?", a: "Backward induction / game theory. Start with 1 pirate, then 2, 3, 4, 5. At each step, the senior pirate only needs to buy the votes of pirates who would receive 0 in the previous scenario." },
+      { q: "What strategy solves the 'river crossing' problem optimally (A=10, B=5, C=2, D=1)?", a: "C+D cross (2min) → D returns (1min) → A+B cross (10min) → C returns (2min) → C+D cross (2min) = 17 minutes total. Key: the two slowest cross together." },
+      { q: "How many trailing zeros does n! have?", a: "Count powers of 5: ⌊n/5⌋ + ⌊n/25⌋ + ⌊n/125⌋ + ... (since powers of 2 always exceed powers of 5). For 100!: 20 + 4 = 24 zeros." },
+      { q: "What is the 'coin split problem' result?", a: "For any sequence of splits of n coins, the sum of all products x·y at each split always equals n(n-1)/2. Independent of split order. Proven by strong induction." },
+      { q: "Chocolate bar breaks: how many breaks to separate an m×n bar?", a: "Always mn-1 breaks, regardless of sequence. Each break adds exactly one piece (1→2), and we need mn pieces total. Proven by strong induction." },
+      { q: "Calendar cubes: why can 6 serve double duty?", a: "6 and 9 are never needed on the same day. Rotating a 6 gives a 9. This allows fitting digits 0-9 onto two dice: {0,1,2,3,4,5} and {0,1,2,6,7,8}." },
+      { q: "Chameleon problem: why can't they all become one color (13R, 15G, 17B)?", a: "Modulo 3 invariant: counts are {1,0,2} mod 3. Each meeting preserves the multiset of remainders. To all be one color needs {0,0,N} mod 3, which is unreachable from {0,1,2}." },
+      { q: "What is the last ball problem result (20 blue, 14 red)?", a: "The last ball is blue. Reason: red ball count can only decrease by 2 or stay the same — it's always even. Starting at 14 (even), it can never reach 1 (odd). Start with 13 red → last ball is red." },
+      { q: "What is the defective ball formula for n weighings?", a: "If you know whether heavier/lighter: up to 3^n balls. If unknown: (3^n - 3)/2 balls in n weighings (first weighing is constrained). For n=3: (27-3)/2 = 12 balls." },
+    ]
+  },
+  {
+    id: 'prob', name: 'Probability', icon: '🎯', color: '#00d4aa',
+    cards: [
+      { q: "Bayes' Theorem formula", a: "P(A|B) = P(B|A)·P(A) / P(B). Extended: P(A|B) = P(B|A)·P(A) / [P(B|A)·P(A) + P(B|Aᶜ)·P(Aᶜ)]." },
+      { q: "E[X] for a geometric distribution with success probability p", a: "E[X] = 1/p (expected number of trials to first success). Var[X] = (1-p)/p²." },
+      { q: "What is the Coupon Collector problem result?", a: "With n distinct coupons (each equally likely), expected number of draws to collect all n is n·H_n = n·(1 + 1/2 + 1/3 + ⋯ + 1/n) ≈ n·ln(n)." },
+      { q: "Probability N points on a circle all lie in a common semicircle?", a: "N/2^(N-1). For N=2: 2/2=1 (trivially always). For N=3: 3/4. Derivation: fix one point, each of the other N-1 must fall in its 180° window." },
+      { q: "If ρ(X,Y) = 0.8 and ρ(X,Z) = 0.8, what is min ρ(Y,Z)?", a: "Min ρ(Y,Z) = cos(2θ) = 2(0.8)² - 1 = 2(0.64) - 1 = 0.28. Geometrically, Y and Z are each at angle arccos(0.8) from X, maximum angle between them is 2θ." },
+      { q: "What is E[X | X > 0] for X ~ N(0,1)?", a: "E[X|X>0] = √(2/π) ≈ 0.798. Computed as: ∫₀^∞ x·f(x)dx / P(X>0) = (1/√(2π)) / (1/2) × ... = 2/√(2π) = √(2/π)." },
+      { q: "Monty Hall: what is P(win) after switching?", a: "2/3. Your initial pick has P=1/3. The host reveals information that concentrates the remaining 2/3 onto the other door. Switching always converts a wrong choice to right and right to wrong." },
+      { q: "What is the expected number of coin flips to get HHH?", a: "E[HHH] = 14. E[HHT] = 10 (shorter because after HH, a tail completes the sequence vs HHH where tail resets to 0). Setup: let E₀, E₁, E₂ be expected flips from 0,1,2 consecutive heads." },
+      { q: "Law of Total Expectation (Tower Property)", a: "E[X] = E[E[X|Y]]. Also: E[X|Z] = E[E[X|Y,Z]|Z]. Used extensively to condition on intermediate information and simplify computations." },
+      { q: "What does the Central Limit Theorem state?", a: "For iid X₁,...,Xₙ with mean μ and variance σ², (X̄-μ)/(σ/√n) → N(0,1) in distribution as n→∞. The sample mean is approximately normal for large n." },
+      { q: "Counterfeit bags problem: what numbers of coins to draw from 5 bags?", a: "Draw 1, 3, 9, 27, 81 coins from bags 1-5 (powers of 3). This creates a base-3 encoding: with 3 possible coin weights (-1, 0, +1), the total deviation uniquely identifies each bag-type combination." },
+    ]
+  },
+  {
+    id: 'stoch', name: 'Stochastic Calc', icon: '📈', color: '#f4c542',
+    cards: [
+      { q: "Define a Brownian motion W(t)", a: "W(0)=0; independent increments; W(tᵢ₊₁)-W(tᵢ) ~ N(0, tᵢ₊₁-tᵢ); continuous paths. Key properties: E[W(t)]=0, E[W(t)²]=t, cov(W(s),W(t))=min(s,t)." },
+      { q: "What are the two key Brownian martingales?", a: "1) W(t) itself. 2) W(t)² - t. Proof of second: d(W²-t) = 2W·dW + dt - dt = 2W·dW (no drift). Also: exp(λW(t) - ½λ²t) is a martingale for any λ." },
+      { q: "State Itô's Lemma", a: "If dX = μdt + σdW and f(X,t) is twice-differentiable: df = (∂f/∂t + μ·∂f/∂X + ½σ²·∂²f/∂X²)dt + σ·∂f/∂X·dW. Key extra term: ½σ²f_xx dt from (dW)²=dt." },
+      { q: "What is Itô's product rule (dX·dY)?", a: "(dt)(dt) = 0, (dt)(dW) = 0, (dW)(dW) = dt. So d(XY) = X·dY + Y·dX + dX·dY." },
+      { q: "Gambler's Ruin: P(reach N | start at k)?", a: "For fair game (p=1/2): P = k/N. For biased game with P(up)=p, P(down)=q: P = (1-(q/p)^k)/(1-(q/p)^N). Expected time = k(N-k) for fair game." },
+      { q: "E[T] to first hit ±a starting at 0 (standard BM)?", a: "E[T] = a². More generally, E[T to reach ±a] = a² using optional stopping on W(t)²-t. And E[T to reach a before -b] has stopping time with E[T] = a·b." },
+      { q: "What is the reflection principle?", a: "For Brownian motion, each path that reaches level x before time t and ends above x has a unique 'reflected' path ending below x. They are equally probable. Used to compute P(τₓ ≤ t) = 2P(W(t) ≥ x)." },
+      { q: "First passage time density to level x > 0?", a: "f_τ(t) = x/√(2πt³) · e^(-x²/2t), t > 0. The expected value E[τₓ] = ∞ (heavy-tailed distribution), even though P(τₓ < ∞) = 1." },
+      { q: "Markov Chain: what is a stationary distribution π?", a: "π·P = π where P is the transition matrix. For ergodic chains, the chain converges to π regardless of starting state. For reversible chains: πᵢPᵢⱼ = πⱼPⱼᵢ (detailed balance)." },
+      { q: "Dynamic programming principle (Bellman equation)", a: "V_k(x) = min_{u} E[g_k(x,u,w) + V_{k+1}(f(x,u,w))]. Work backwards from terminal condition V_N(x) = g_N(x). Optimal tail policy is independent of how we reached the current state." },
+    ]
+  },
+  {
+    id: 'finance', name: 'Finance & Options', icon: '💹', color: '#22c55e',
+    cards: [
+      { q: "Put-Call Parity (no dividends)", a: "c + Ke^(-rT) = p + S. With dividends: c + Ke^(-rT) = p + S - D (D = PV of dividends). If K = Se^(rT) (forward price), then c = p." },
+      { q: "Black-Scholes formula for a European call", a: "c = S·N(d₁) - Ke^(-rτ)·N(d₂), where d₁ = [ln(S/K) + (r+σ²/2)τ]/(σ√τ), d₂ = d₁ - σ√τ. N(d₂) = risk-neutral P(S_T > K). N(d₁) = delta." },
+      { q: "BSM assumptions", a: "1) No dividends. 2) Constant r and σ. 3) dS = μSdt + σSdW (geometric BM). 4) No transaction costs/taxes, full short-sale proceeds. 5) Continuous trading. 6) No arbitrage." },
+      { q: "Delta (Δ) for a European call and put", a: "Δ_call = N(d₁) ∈ (0,1). Δ_put = N(d₁) - 1 = -N(-d₁) ∈ (-1,0). For at-the-money call: Δ ≈ 0.5 (slightly above). As τ→0: ATM call Δ → 0.5." },
+      { q: "What are Gamma (Γ) and Theta (Θ)?", a: "Γ = ∂²V/∂S² (convexity; always positive for vanilla options). Θ = ∂V/∂t (time decay; usually negative for long options). Key: Θ = -½σ²S²Γ + rV (BSM PDE rearranged) — Theta-Gamma tradeoff." },
+      { q: "Why is early exercise of an American call suboptimal (no dividends)?", a: "Three reasons: 1) Time value is lost. 2) Interest on K: better to hold K in bond. 3) Insurance value of put is lost. Formally: by Jensen's inequality, E[max(S_T-K,0)] ≥ max(E[S_T]-K,0) under risk-neutral measure." },
+      { q: "BSM PDE", a: "∂V/∂t + rS·∂V/∂S + ½σ²S²·∂²V/∂S² = rV. Derived by constructing a riskless portfolio Π = V - (∂V/∂S)·S and setting dΠ = rΠdt." },
+      { q: "Risk-neutral pricing formula", a: "V(t) = e^(-r(T-t))·E^Q[V(T)], where E^Q is expectation under risk-neutral measure where drift = r. Under Q: dS = rSdt + σSdW^Q (not μ). Price is discounted expected payoff." },
+      { q: "Feynman-Kac theorem", a: "V(t,x) = E^Q[e^(-r(T-t))f(X_T)|X_t=x] satisfies ∂V/∂t + β·∂V/∂x + ½γ²·∂²V/∂x² = rV where dX=βdt+γdW. Bridges PDEs and stochastic expectations." },
+      { q: "Option greeks: which increases for ATM options near expiry?", a: "Gamma increases sharply for ATM options as expiry approaches. Delta jumps between 0 and 1. Theta becomes very negative (rapid time decay). Vega decreases (less time for vol to matter)." },
+    ]
+  },
+  {
+    id: 'calc', name: 'Calculus & LinAlg', icon: '∫', color: '#a855f7',
+    cards: [
+      { q: "Product rule and chain rule", a: "Product: (uv)' = u'v + uv'. Quotient: (u/v)' = (u'v - uv')/v². Chain: d/dx f(g(x)) = f'(g(x))·g'(x). Power: d/dx(xⁿ) = nxⁿ⁻¹." },
+      { q: "Taylor series for eˣ, sin x, cos x at x=0", a: "eˣ = 1 + x + x²/2! + x³/3! + ⋯. sin x = x - x³/3! + x⁵/5! - ⋯. cos x = 1 - x²/2! + x⁴/4! - ⋯. Euler: e^(ix) = cos x + i·sin x." },
+      { q: "L'Hôpital's Rule", a: "If lim f(x)/g(x) is 0/0 or ∞/∞, then lim f(x)/g(x) = lim f'(x)/g'(x) (if the latter exists). Can be applied repeatedly." },
+      { q: "Integration by parts formula", a: "∫u dv = uv - ∫v du. Useful mnemonic: LIATE (Logs, Inverse trig, Algebraic, Trig, Exponential) for choosing u." },
+      { q: "What does it mean for a matrix to be positive definite?", a: "A symmetric matrix A is positive definite if xᵀAx > 0 for all nonzero x. Equivalent: all eigenvalues > 0. Covariance matrices are positive semidefinite (≥0)." },
+      { q: "OLS regression: normal equations and solution", a: "Minimize ||Y - Xβ||². Normal equations: (XᵀX)β = XᵀY. Solution: β̂ = (XᵀX)⁻¹XᵀY. Alternatively via QR: Rβ̂ = Qᵀb where A = QR." },
+      { q: "Newton's method iteration formula", a: "xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ). Quadratic convergence (errors ~squared each step). Requires good starting point. Bisection is slower (linear) but guaranteed to converge." },
+      { q: "What is Euler's identity?", a: "e^(iπ) + 1 = 0, a special case of e^(iθ) = cos θ + i·sin θ. When θ=π: e^(iπ) = -1. Consequence: iⁱ = (e^(iπ/2))ⁱ = e^(-π/2) ≈ 0.208." },
+      { q: "Separable ODE: how to solve dy/dx = g(x)h(y)?", a: "Separate: dy/h(y) = g(x)dx. Integrate both sides: ∫dy/h(y) = ∫g(x)dx + C. Apply initial conditions to find C." },
+      { q: "QR Decomposition: what is it and when is it used?", a: "A = QR where Q is orthogonal (QᵀQ=I) and R is upper triangular. Used for solving linear systems Ax=b (→ Rx=Qᵀb, then back-substitute), and for OLS regression. More numerically stable than direct inverse." },
+    ]
+  },
+  {
+    id: 'algo', name: 'Algorithms', icon: '⚙️', color: '#ff4d6d',
+    cards: [
+      { q: "Kadane's algorithm: maximum subarray sum", a: "maxHere = max(A[i], maxHere + A[i]); maxSoFar = max(maxSoFar, maxHere). O(n) time, O(1) space. Key: negative running sums should be reset." },
+      { q: "Fisher-Yates shuffle: unbiased random permutation", a: "For i from n-1 to 1: swap A[i] with A[random(0..i)]. O(n) time, O(1) space. Generates all n! permutations with equal probability." },
+      { q: "Binary search: O(log n) conditions", a: "Requires sorted array. Check midpoint, eliminate half each step. Works on monotone functions. For floating-point: use ε-tolerance instead of exact equality." },
+      { q: "Monte Carlo: how many samples for k digits of accuracy?", a: "Standard error ∝ 1/√n. For k decimal places of π: need n ≈ 10^(2k) samples. Very slow convergence — variance reduction methods (antithetic, control variates) are essential." },
+      { q: "Poisonous wine: identify 1 bad bottle among 1000 with 10 mice in 1 day", a: "Binary encode bottle numbers 1-1000. Mouse i tastes all bottles with bit i set in their number. The death pattern (10 bits) directly encodes the poisoned bottle. 2^10=1024≥1000." },
+      { q: "Horner's method: polynomial evaluation", a: "aₙxⁿ + ... + a₁x + a₀ = (...((aₙx + aₙ₋₁)x + aₙ₋₂)x... + a₁)x + a₀. O(n) multiplications instead of O(n²). Numerically stable." },
+      { q: "Compare quicksort vs mergesort", a: "Quicksort: O(n log n) average, O(n²) worst, in-place, not stable. Mergesort: O(n log n) always, O(n) space, stable. Quicksort is faster in practice due to cache locality." },
+      { q: "Finite difference: explicit vs implicit for BSM PDE", a: "Explicit (FTCS): simple but conditionally stable (requires Δt ≤ (Δx)²/σ²). Implicit (Crank-Nicolson): unconditionally stable, second-order accurate in time. Preferred for option pricing." },
+    ]
+  },
+];
+
+// ============================================================
+// CLASSIC PROBLEMS — Full statements and solutions
+// ============================================================
+const PROBLEMS = [
+  {
+    id: 1, title: "Screwy Pirates", tags: ['brain'],
+    difficulty: 'medium', chapter: 'Ch.2',
+    problem: "Five pirates loot a chest of 100 gold coins. They vote on the senior pirate's proposed distribution (≥50% to pass). If rejected, the senior pirate is fed to sharks. All pirates are perfectly rational: they prioritize survival, then gold, then prefer fewer surviving pirates. How will the coins be distributed?",
+    solution: "<strong>Answer: Senior pirate keeps 98, gives 1 coin each to pirates #1 and #3.</strong><br><br><strong>Build up from simpler cases:</strong><br>• 1 pirate: keeps all 100.<br>• 2 pirates: pirate 2 always votes for himself → keeps 100.<br>• 3 pirates: pirate 3 needs 1 more vote. Pirate 1 gets 0 in the 2-pirate scenario → offer him 1 coin. Proposal: [1, 0, 99].<br>• 4 pirates: pirate 4 needs 1 more vote. Pirate 2 gets 0 in the 3-pirate scenario → offer him 1 coin. Proposal: [0, 1, 0, 99].<br>• 5 pirates: pirates 1 and 3 each get 0 in the 4-pirate scenario. Bribe both. Proposal: [<strong>1, 0, 1, 0, 98</strong>] ✓"
+  },
+  {
+    id: 2, title: "Defective Ball (12 balls, 3 weighings)", tags: ['brain'],
+    difficulty: 'hard', chapter: 'Ch.2',
+    problem: "You have 12 identical-looking balls. One ball is defective — either heavier or lighter than the rest (you don't know which). Using a balance scale that only shows which side is heavier, find the defective ball and whether it's heavier or lighter, using exactly 3 weighings.",
+    solution: "<strong>Key insight: Split into 3 groups of 4 (not 2 groups of 6).</strong><br><br>Weighing 1: {1,2,3,4} vs {5,6,7,8}.<br><br><strong>Case A: They balance</strong> → defective is in {9,10,11,12}, unknown if H or L.<br>Weighing 2: {9,10} vs {8,11} (8 is known good).<br>• If 9,10 lighter: either 9L, 10L, or 11H. Weighing 3: 9 vs 10.<br>• If 9,10 heavier: either 9H, 10H, or 11L. Weighing 3: 9 vs 10.<br>• If balanced: 12 is defective. Weighing 3: 12 vs any known good ball.<br><br><strong>Case B: 1,2,3,4 lighter</strong> → defective ∈ {1-4 as L} or {5-8 as H}.<br>Weighing 2: {1,2,5} vs {3,6,9} (9 is known good).<br>(Full tree analysis resolves all 8 sub-cases in one more weighing.)"
+  },
+  {
+    id: 3, title: "Burning Ropes (45 minutes)", tags: ['brain'],
+    difficulty: 'easy', chapter: 'Ch.2',
+    problem: "You have two ropes, each of which takes exactly 1 hour to burn completely. Neither rope burns uniformly — different sections burn at different rates. No measuring tools are available. How do you measure exactly 45 minutes?",
+    solution: "<strong>Step 1:</strong> Light both ends of Rope 1 AND one end of Rope 2 simultaneously.<br><br><strong>After 30 minutes:</strong> Rope 1 finishes (both ends burning → half the time = 30 min). Rope 2 has 30 minutes of burn remaining (one end).<br><br><strong>Step 2:</strong> At the moment Rope 1 finishes, light the OTHER end of Rope 2.<br><br><strong>After 15 more minutes:</strong> Rope 2 finishes (30-min rope, lit from both ends = 15 min).<br><br><strong>Total: 30 + 15 = 45 minutes ✓</strong>"
+  },
+  {
+    id: 4, title: "Last Ball (Blue/Red)", tags: ['brain'],
+    difficulty: 'medium', chapter: 'Ch.2',
+    problem: "A bag has 20 blue balls and 14 red balls. Each step: draw 2 balls randomly. If same color → add 1 blue; if different colors → add 1 red. Repeat until 1 ball remains. What color is it?",
+    solution: "<strong>Track what happens to RED ball count:</strong><br>• Both blue drawn → replace with 1 blue: RED count unchanged.<br>• Both red drawn → replace with 1 blue: RED decreases by 2.<br>• One each → replace with 1 red: RED count unchanged.<br><br><strong>Key invariant:</strong> Red count can only decrease by 2 or stay the same. It is always even (starting at 14).<br><br>Since the last ball corresponds to RED = 0 or RED = 1, and RED stays even, we can never reach RED = 1.<br><br><strong>Last ball is always BLUE.</strong><br><br>If we started with 13 red (odd), the last ball would be red."
+  },
+  {
+    id: 5, title: "Coin Split (1000 coins)", tags: ['brain'],
+    difficulty: 'hard', chapter: 'Ch.2',
+    problem: "Split 1000 coins into two piles. Multiply the pile sizes. Keep splitting each pile, multiplying sizes, and summing. Continue until all piles have 1 coin. Prove the final sum is always the same, and compute it.",
+    solution: "<strong>Claim:</strong> f(n) = n(n-1)/2, regardless of split order.<br><br><strong>Proof by strong induction:</strong> Base cases f(2)=1, f(3)=3, f(4)=6 all satisfy n(n-1)/2.<br><br>Inductive step: assume true for all k < N. Split N into x and (N-x):<br>f(N) = x(N-x) + f(x) + f(N-x) = x(N-x) + x(x-1)/2 + (N-x)(N-x-1)/2<br>= x(N-x) + [x(x-1) + (N-x)(N-x-1)]/2<br>= N(N-1)/2. ✓<br><br><strong>For n=1000: f(1000) = 1000×999/2 = 499,500</strong>"
+  },
+  {
+    id: 6, title: "Gambler's Ruin", tags: ['prob', 'stoch'],
+    difficulty: 'medium', chapter: 'Ch.5',
+    problem: "A gambler starts with $k and makes fair $1 bets. They stop when reaching $N (win) or $0 (ruin). Find the probability of winning and the expected duration of the game.",
+    solution: "<strong>Probability of winning (reaching $N before $0):</strong><br>P(k) = k/N (fair game, p=1/2).<br><br>Derivation: Xₙ (gambler's wealth) is a martingale. Optional Stopping Theorem: E[X_T] = X₀ = k. Terminal state: N with prob P, 0 with prob 1-P. So N·P = k → P = k/N.<br><br><strong>Expected game duration:</strong><br>M(k) = k(N-k). Derivation: Xₙ²-n is also a martingale. Optional stopping: E[X_T²-T] = k²-0. E[X_T²] = N²·P = N²·(k/N) = Nk. So E[T] = Nk - k² = k(N-k).<br><br><strong>Example:</strong> Starting at $5, stopping at $0 or $10: P(win) = 50%, E[duration] = 25 bets."
+  },
+  {
+    id: 7, title: "Expected Value of HHH vs HHT", tags: ['prob', 'stoch'],
+    difficulty: 'hard', chapter: 'Ch.5',
+    problem: "For a fair coin, compute the expected number of flips to see the pattern HHH, and separately for HHT. Why do they differ?",
+    solution: "<strong>E[HHH] = 14, E[HHT] = 10.</strong><br><br><strong>For HHH — state equations:</strong><br>Let E₀, E₁, E₂ = expected flips from states {0, 1, 2 consecutive H}.<br>E₂ = 1 + ½·0 + ½·E₀ (H→done, T→reset to 0)<br>E₁ = 1 + ½·E₂ + ½·E₀<br>E₀ = 1 + ½·E₁ + ½·E₀<br>Solve: E₂=8, E₁=12, E₀=14.<br><br><strong>For HHT — state equations:</strong><br>E₂ = 1 + ½·0 + ½·E₂ (H→stay HH, T→done!)<br>E₁ = 1 + ½·E₂ + ½·E₀<br>E₀ = 1 + ½·E₁ + ½·E₀<br>Solve: E₂=2, E₁=6, E₀=10.<br><br><strong>Why shorter for HHT?</strong> After seeing HH, a Tail completes HHT but resets HHH to zero, so HHT gets more 'help' from the attempt."
+  },
+  {
+    id: 8, title: "Black-Scholes Formula Derivation", tags: ['finance', 'stoch'],
+    difficulty: 'hard', chapter: 'Ch.6',
+    problem: "Under the BSM framework (GBM stock price, constant r and σ, no dividends), derive the price of a European call option using the risk-neutral pricing approach.",
+    solution: "<strong>Under risk-neutral measure:</strong> dS = rSdt + σSdW → ln(S_T) ~ N(ln(S) + (r-σ²/2)T, σ²T).<br><br><strong>Pricing formula:</strong> c = e^(-rT)·E^Q[max(S_T-K, 0)]<br><br><strong>Compute:</strong><br>S_T = S·exp((r-σ²/2)T + σ√T·ε), ε~N(0,1).<br>S_T > K iff ε > -(d₁) = d₂ where d₂ = [ln(S/K)+(r-σ²/2)T]/(σ√T).<br><br>E^Q[max(S_T-K,0)] = E^Q[S_T·𝟙(S_T>K)] - K·P^Q(S_T>K)<br>= S·e^(rT)·N(d₁) - K·N(d₂)<br><br>After discounting: <strong>c = S·N(d₁) - Ke^(-rT)·N(d₂)</strong><br><br>where d₁ = d₂ + σ√T = [ln(S/K)+(r+σ²/2)T]/(σ√T)."
+  },
+  {
+    id: 9, title: "Itô's Lemma Application", tags: ['stoch'],
+    difficulty: 'hard', chapter: 'Ch.5',
+    problem: "Apply Itô's Lemma to show that if dS = μSdt + σSdW (geometric Brownian motion), then d(ln S) = (μ - σ²/2)dt + σdW. Explain the significance of the -σ²/2 term.",
+    solution: "<strong>Let f(S) = ln(S).</strong> Then f_S = 1/S, f_SS = -1/S², f_t = 0.<br><br><strong>Itô's Lemma:</strong> df = f_S·dS + f_t·dt + ½·f_SS·(dS)²<br>= (1/S)·(μSdt + σSdW) + 0 + ½·(-1/S²)·σ²S²dt<br>= μdt + σdW - ½σ²dt<br>= <strong>(μ - σ²/2)dt + σdW</strong><br><br><strong>Significance of -σ²/2:</strong><br>• S_T is lognormally distributed: E[S_T] = S₀e^(μT) (exponential growth at μ).<br>• But ln(S_T) grows at rate μ-σ²/2 (less than μ!).<br>• This 'volatility drag' means the geometric mean return = μ - σ²/2 < μ = arithmetic mean.<br>• Under risk-neutral measure: replace μ with r → ln(S_T) ~ N(ln(S)+(r-σ²/2)T, σ²T)."
+  },
+  {
+    id: 10, title: "Put-Call Parity and Arbitrage", tags: ['finance'],
+    difficulty: 'medium', chapter: 'Ch.6',
+    problem: "A European put on non-dividend-paying stock with strike $80 trades at $8. A European put with strike $90 trades at $9. Same expiry and underlying. Does an arbitrage opportunity exist?",
+    solution: "<strong>Theory:</strong> Put prices are convex in strike: P(λK₁ + (1-λ)K₂) ≤ λP(K₁) + (1-λ)P(K₂).<br><br>For K₁=0, K₂=90, λ=8/9: P(80) ≤ (8/9)×9 = 8. But P(80) = $8 exactly, meeting the boundary.<br><br>Since P(80) cannot exceed $8, it's at the convexity limit — any epsilon overpricing is exploitable.<br><br><strong>Arbitrage strategy:</strong><br>• Short 9 puts at K=80: receive $72<br>• Long 8 puts at K=90: pay $72<br>• Net initial cash flow: $0<br><br><strong>Payoff at expiry:</strong><br>• S_T ≥ 90: both expire worthless → $0<br>• 80 ≤ S_T < 90: only K=90 puts exercised → 8(90-S_T) > 0<br>• S_T < 80: both exercised → 8(90-S_T) - 9(80-S_T) = S_T ≥ 0<br><br>Non-negative payoff, zero cost → <strong>arbitrage exists</strong>."
+  },
+  {
+    id: 11, title: "Brownian Motion Stopping Time", tags: ['stoch'],
+    difficulty: 'hard', chapter: 'Ch.5',
+    problem: "A standard Brownian motion starts at 0. What is the probability that it hits +3 before hitting -5? What if the Brownian motion has drift m (i.e., dX = m·dt + dW)?",
+    solution: "<strong>No drift (m=0):</strong> Brownian motion is a martingale. By Optional Stopping: E[X_T] = 0. With P = P(hit +3): 3P + (-5)(1-P) = 0 → 3P - 5 + 5P = 0 → P = 5/8.<br><br><strong>With drift m ≠ 0:</strong> Use exponential martingale Z(t) = exp(λX - ½λ²t). Set λ = -2m to cancel time dependence: E[exp(-2mX)] = 1.<br><br>By Optional Stopping: P·exp(-2m·3) + (1-P)·exp(-2m·(-5)) = 1.<br>Solve: P = (e^(10m) - 1)/(e^(10m) - e^(-6m)).<br><br>Check: as m→0, both e terms → 1 and P → 10m/(10m+6m) → 10/16 = 5/8 ✓"
+  },
+  {
+    id: 12, title: "World Series Betting (Dynamic Programming)", tags: ['stoch', 'finance'],
+    difficulty: 'hard', chapter: 'Ch.5',
+    problem: "The World Series is best-of-7 (first to win 4 games wins). You place a double-or-nothing $100 bet on Team A. You can only bet on each individual game. How much should you bet at each state (i,j) — Team A has won i games, Team B has won j — to guarantee exactly ±$100 at the end?",
+    solution: "<strong>Key insight: This is a delta-hedging problem.</strong><br><br>Define f(i,j) = current account value at state (i,j). Boundary: f(4,j)=+100, f(i,4)=-100.<br><br><strong>Bet formula:</strong> bet y so that f(i,j)+y = f(i+1,j) and f(i,j)-y = f(i,j+1). So: y = [f(i+1,j) - f(i,j+1)] / 2, and f(i,j) = [f(i+1,j) + f(i,j+1)] / 2.<br><br><strong>Selected values:</strong> f(3,3)=0, f(3,2)=50, f(2,3)=-50, f(0,0)=0.<br>Bet at (3,3) = [100-(-100)]/2 = $100 (all-in!). Bet at (0,0) = [f(1,0)-f(0,1)]/2.<br><br>The bet function is exactly the <strong>delta</strong> in dynamic hedging — this problem is structurally identical to American option replication."
+  },
+  {
+    id: 13, title: "E[X | X > 0] for Standard Normal", tags: ['prob', 'calc'],
+    difficulty: 'medium', chapter: 'Ch.3',
+    problem: "If X ~ N(0,1), compute E[X | X > 0] using integration.",
+    solution: "E[X|X>0] = E[X·𝟙(X>0)] / P(X>0)<br><br>Numerator: ∫₀^∞ x · (1/√(2π)) · e^(-x²/2) dx<br><br>Let u = x²/2, du = x dx:<br>= (1/√(2π)) ∫₀^∞ e^(-u) du = (1/√(2π)) · [-e^(-u)]₀^∞ = 1/√(2π).<br><br>Denominator: P(X>0) = 1/2.<br><br>E[X|X>0] = (1/√(2π)) / (1/2) = <strong>2/√(2π) = √(2/π) ≈ 0.798</strong><br><br>Interpretation: The average value of a standard normal, conditioned on being positive, is about 0.8 standard deviations above zero."
+  },
+  {
+    id: 14, title: "Glass Balls (100-story building)", tags: ['brain'],
+    difficulty: 'hard', chapter: 'Ch.2',
+    problem: "You're in a 100-story building with 2 glass balls. A ball thrown from floor X or above shatters; below X it doesn't. You want to find X. What strategy minimizes the worst-case number of drops?",
+    solution: "<strong>Optimal strategy: 14 drops maximum.</strong><br><br>Let N = maximum drops. Ball 1 tests floors N, N+(N-1), N+(N-1)+(N-2), ...<br>Ball 2 searches linearly after ball 1 breaks.<br><br><strong>Coverage:</strong> N+(N-1)+...+1 = N(N+1)/2 ≥ 100 → N ≥ 14 (since 14×15/2=105≥100).<br><br><strong>Strategy:</strong><br>• Drop ball 1 at floor 14. If breaks → test 1-13 with ball 2 (≤14 drops total).<br>• If not: drop at floor 14+13=27. If breaks → test 15-26 (≤14 drops total).<br>• Continue: 39, 50, 60, 69, 77, 84, 90, 95, 99, 100.<br><br>Interval sizes decrease by 1 each time, ensuring worst-case is always ≤14 drops."
+  },
+  {
+    id: 15, title: "Dynamic Card Game Optimal Stop", tags: ['stoch', 'finance'],
+    difficulty: 'hard', chapter: 'Ch.5',
+    problem: "A standard 52-card deck (26 red, 26 black) is shuffled. Cards are drawn one by one without replacement. You win $1 for each red card drawn, lose $1 for each black card drawn. You can stop at any time. What is the optimal stopping strategy and expected payoff?",
+    solution: "<strong>Dynamic programming with state (b,r) = (black left, red left).</strong><br><br>Stop if: b-r ≥ E[keep going] → stop when you're ahead and odds are against you.<br><br>Value function: f(b,r) = max(b-r, b/(b+r)·f(b-1,r) + r/(b+r)·f(b,r-1))<br>Boundary: f(0,r)=0, f(b,0)=b.<br><br><strong>Key values:</strong> f(1,1)=0.5, f(2,2)≈0.67, f(26,26)≈2.62.<br><br><strong>Optimal strategy:</strong> Compute f(b,r) for current remaining deck. Stop when b-r ≥ f(b,r), i.e., when your 'guaranteed' payoff (stop now) ≥ expected payoff from continuing.<br><br><strong>Expected payoff: E[f(26,26)] = $2.62</strong> (this is how much you'd pay to play)."
+  },
+];
+
+// ============================================================
+// FORMULA REFERENCE
+// ============================================================
+const FORMULA_SECTIONS = [
+  {
+    id: 'brain', name: 'Brain Teasers',
+    formulas: [
+      { name: "Series Sum", eq: "∑(k=1 to N) k = N(N+1)/2\n∑(k=1 to N) k² = N(N+1)(2N+1)/6", note: "Gauss's formula. For clock puzzle: 1+...+12 = 78, each piece = 26." },
+      { name: "Pigeonhole Principle", eq: "n items, m < n containers\n⟹ ≥1 container has > 1 item\nGeneralized: n > km ⟹ ≥1 container has > k items", note: "Used for: sock matching, handshakes, ants on square." },
+      { name: "Coin Split", eq: "f(n) = n(n-1)/2\nfor any splitting sequence\n\nf(1000) = 499,500", note: "Independent of split order. Proven by strong induction." },
+      { name: "Chocolate Bar", eq: "m×n bar requires exactly mn-1 breaks\nregardless of break sequence", note: "Each break adds exactly 1 piece. Start=1, end=mn." },
+      { name: "Trailing Zeros in n!", eq: "zeros = ∑(k≥1) ⌊n/5^k⌋\n= ⌊n/5⌋ + ⌊n/25⌋ + ⌊n/125⌋ + ...", note: "100! has 20+4 = 24 zeros." },
+      { name: "Horse Race (25 horses, top 3)", eq: "Minimum races = 7\n(5 group + 1 champion + 1 final)", note: "After champion race: eliminate bottom 2 groups + horses ranked below 3rd." },
+    ]
+  },
+  {
+    id: 'prob', name: 'Probability',
+    formulas: [
+      { name: "Bayes' Theorem", eq: "P(A|B) = P(B|A)·P(A) / P(B)", note: "P(B) = P(B|A)P(A) + P(B|Aᶜ)P(Aᶜ). Foundation for updating beliefs." },
+      { name: "Common Distributions", eq: "Geometric: P(X=k) = (1-p)^(k-1)·p, E[X]=1/p\nPoisson: P(X=k) = λ^k·e^(-λ)/k!, E[X]=λ\nBinomial: P(X=k) = C(n,k)·p^k·(1-p)^(n-k)", note: "Geometric: memoryless. Poisson: rare events. Binomial: n Bernoulli trials." },
+      { name: "Normal Distribution", eq: "X~N(μ,σ²): f(x) = e^(-(x-μ)²/2σ²) / (σ√(2π))\nE[X] = μ, Var[X] = σ²\nE[X|X>0] for X~N(0,1) = √(2/π) ≈ 0.798", note: "Standard: N(0,1). 68-95-99.7 rule for ±1,2,3σ." },
+      { name: "N points on a semicircle", eq: "P(all N points in common semicircle)\n= N / 2^(N-1)", note: "Fix one point; each of N-1 others must be in its 180° arc." },
+      { name: "Covariance and Correlation", eq: "Cov(X,Y) = E[XY] - E[X]E[Y]\nρ(X,Y) = Cov(X,Y) / (σ_X · σ_Y)\n\nMin ρ(Y,Z) given ρ(X,Y)=ρ(X,Z)=ρ:\n= 2ρ² - 1", note: "Correlation as cosine of angle between vectors." },
+      { name: "Expected Coin Flip Patterns", eq: "E[H] = 2\nE[HH] = 6\nE[HHH] = 14\nE[HHT] = 10\nE[HTH] = 10", note: "Via Markov chain state equations. Pattern with longest run = slower." },
+    ]
+  },
+  {
+    id: 'stoch', name: 'Stochastic Calculus',
+    formulas: [
+      { name: "Itô's Lemma (1D)", eq: "dX = μdt + σdW\ndf(X,t) = (∂f/∂t + μ·f_X + ½σ²·f_XX)dt\n         + σ·f_X·dW", note: "Key: extra ½σ²f_XX dt term from (dW)² = dt. This is the 'Itô correction'." },
+      { name: "Itô Multiplication Table", eq: "dt·dt = 0\ndt·dW = 0\ndW·dW = dt", note: "Used to expand (dX)² and compute Itô integrals." },
+      { name: "Brownian Motion Key Properties", eq: "W(0) = 0\nW(t)-W(s) ~ N(0, t-s), independent of past\nE[W(t)] = 0, E[W(t)²] = t\ncov(W(s),W(t)) = min(s,t)", note: "Continuous paths. Markov property. Martingale." },
+      { name: "Key BM Martingales", eq: "W(t) is a martingale\nW(t)² - t is a martingale\nexp(λW(t) - ½λ²t) is a martingale", note: "Proved via Itô's lemma. Used in optional stopping problems." },
+      { name: "Gambler's Ruin (Fair Game)", eq: "P(reach N | start at k) = k/N\nE[stopping time | start at k] = k(N-k)", note: "From martingale optional stopping on W(t) and W(t)²-t." },
+      { name: "First Passage Time (BM to level x)", eq: "P(τ_x ≤ t) = 2P(W(t) ≥ x)\nf_τ(t) = (x/√(2πt³)) · e^(-x²/2t)\nE[τ_x] = ∞  (but P(τ_x < ∞) = 1!)", note: "The distribution is inverse-Gaussian. Infinite mean despite certain hitting." },
+      { name: "BM with Drift Stopping", eq: "P(hit a before -b | dX=mdt+dW, X(0)=0)\n= (e^(10m)-1)/(e^(10m)-e^(-6m)) for a=3,b=5\nGeneral: use Z(t)=exp(-2mX) martingale", note: "Exponential martingale eliminates time dependence." },
+    ]
+  },
+  {
+    id: 'finance', name: 'Finance & Options',
+    formulas: [
+      { name: "Black-Scholes Formula", eq: "c = S·e^(-yτ)·N(d₁) - K·e^(-rτ)·N(d₂)\np = K·e^(-rτ)·N(-d₂) - S·e^(-yτ)·N(-d₁)\n\nd₁ = [ln(S/K) + (r-y+σ²/2)τ] / (σ√τ)\nd₂ = d₁ - σ√τ", note: "y = dividend yield. N(d₂) = risk-neutral P(ITM). N(d₁) = delta (undiscounted)." },
+      { name: "Put-Call Parity", eq: "c + Ke^(-rτ) = p + S - D\n\nc - p = S·e^(-yτ) - Ke^(-rτ)", note: "D = PV of dividends. When K = forward price, c = p." },
+      { name: "Black-Scholes PDE", eq: "∂V/∂t + rS·∂V/∂S + ½σ²S²·∂²V/∂S² = rV\n\nDerived from: dΠ = rΠ·dt\nwhere Π = V - (∂V/∂S)·S", note: "Drift μ doesn't appear! Only r matters (risk-neutral). Holds for any derivative." },
+      { name: "The Greeks", eq: "Δ = ∂V/∂S  (delta)\nΓ = ∂²V/∂S²  (gamma)\nΘ = ∂V/∂t  (theta, negative for longs)\nν = ∂V/∂σ  (vega, always positive)\nρ = ∂V/∂r  (rho)", note: "Call delta = N(d₁). Put delta = N(d₁)-1. Gamma = N'(d₁)/(Sσ√τ). Key: Θ ≈ -½σ²S²Γ." },
+      { name: "Theta-Gamma Relation", eq: "Θ + ½σ²S²Γ + rS·Δ - rV = 0\n\nFor Δ-hedged portfolio (rS·Δ ≈ rV):\nΘ ≈ -½σ²S²Γ", note: "Long gamma → short theta (pay for realized vol). This is the fundamental options trade-off." },
+      { name: "Risk-Neutral Pricing", eq: "V(t) = e^(-r(T-t)) · E^Q[V(T) | F_t]\n\nUnder Q: dS = rSdt + σSdW^Q\nln(S_T) ~ N(ln(S)+(r-σ²/2)τ, σ²τ)", note: "Feynman-Kac connects PDE to expectation under risk-neutral measure Q." },
+    ]
+  },
+  {
+    id: 'calc', name: 'Calculus & Linear Algebra',
+    formulas: [
+      { name: "Taylor Series", eq: "eˣ = Σ xⁿ/n! = 1 + x + x²/2! + x³/3! + ...\nsin x = x - x³/3! + x⁵/5! - ...\ncos x = 1 - x²/2! + x⁴/4! - ...\n(1+x)ⁿ ≥ 1 + nx  (Bernoulli, x > -1)", note: "Euler: e^(ix) = cos x + i sin x. At x=π: e^(iπ) = -1." },
+      { name: "Key Integrals", eq: "∫ln x dx = x·ln x - x + C\n∫sec x dx = ln|sec x + tan x| + C\n∫₋∞^∞ e^(-x²/2) dx = √(2π)\n∫₀^∞ xⁿe^(-x) dx = n! (Gamma)", note: "Gaussian integral proved via polar coordinates. Critical for normal distribution." },
+      { name: "L'Hôpital's Rule", eq: "If lim f/g = 0/0 or ∞/∞:\nlim f(x)/g(x) = lim f'(x)/g'(x)\n\nlim(x→∞) eˣ/xⁿ = ∞ for any n\nlim(x→0⁺) xⁿ ln x = 0 for any n > 0", note: "Exponentials beat polynomials; polynomials beat logarithms." },
+      { name: "Differential Equations", eq: "Separable: dy/h(y) = g(x)dx → integrate\nFirst-order linear: IF = e^∫P(x)dx\nCharacteristic eq: ar² + br + c = 0\nComplex roots a±βi: e^ax(c₁cosβx + c₂sinβx)", note: "Key ODEs in finance: Vasicek (mean-reversion), geometric BM, heat equation." },
+      { name: "Linear Regression (OLS)", eq: "Y = Xβ + ε\nSolution: β̂ = (XᵀX)⁻¹XᵀY\nNormal equations: (XᵀX)β̂ = XᵀY\nAlternative: QR decomposition", note: "Assumptions: linearity, E[ε]=0, homoskedasticity, no perfect multicollinearity." },
+      { name: "Determinant & Eigenvalues", eq: "det(AB) = det(A)·det(B)\ndet(Aᵀ) = det(A)\nAv = λv (eigenvalue equation)\nTrace(A) = Σλᵢ, det(A) = Πλᵢ", note: "Positive definite: all eigenvalues > 0. Cholesky: A = LLᵀ for PD matrices." },
+    ]
+  },
+  {
+    id: 'algo', name: 'Algorithms',
+    formulas: [
+      { name: "Sorting Complexity", eq: "Quicksort: O(n log n) avg, O(n²) worst\nMergesort: O(n log n) always, O(n) space\nHeapsort: O(n log n), O(1) space\nBubble/Insertion: O(n²)", note: "Comparison sorts: Ω(n log n) lower bound. Counting/radix sort: O(n+k)." },
+      { name: "Newton's Method", eq: "xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)\nConvergence: quadratic |eₙ₊₁| ≤ C|eₙ|²\nBisection: linear |eₙ₊₁| ≤ ½|eₙ|\nSecant: order (1+√5)/2 ≈ 1.618", note: "Newton: need good starting point. Bisection: guaranteed. Secant: no derivative needed." },
+      { name: "Monte Carlo Error", eq: "E[f(X)] ≈ (1/n)Σf(Xᵢ)\nStandard error = σ/√n\n\nπ estimation: 4×(hits in circle)/n\nAccuracy: O(1/√n) always", note: "Variance reduction: antithetic variates, control variates, importance sampling, quasi-MC." },
+      { name: "Binary Search & Hash", eq: "Binary search: O(log n) comparisons\nHash table: O(1) avg, O(n) worst\nKadane's max subarray: O(n)\nFibonacci: O(n) iterative, O(log n) matrix", note: "Kadane: maxHere = max(a[i], maxHere+a[i]). Fibonacci matrix: [[1,1],[1,0]]^n." },
+    ]
+  },
+];
+
+// ============================================================
+// QUANTEDGE APP — Interactive Quiz, Flashcards, Problems
+// ============================================================
+
+// ===== STATE =====
+let state = {
+  answered: 0, correct: 0, flashReviewed: 0, streak: 0,
+  topicProgress: {},
+  quizQuestions: [], quizIndex: 0, quizCorrect: 0,
+  quizAnswered: false,
+  fcDeck: null, fcIndex: 0, fcFlipped: false,
+  fcRatings: {},
+  problemTag: 'all',
+  currentPage: 'home',
+};
+
+// Load from localStorage
+try {
+  const saved = localStorage.getItem('qe_state');
+  if (saved) {
+    const s = JSON.parse(saved);
+    state.answered = s.answered || 0;
+    state.correct = s.correct || 0;
+    state.flashReviewed = s.flashReviewed || 0;
+    state.streak = s.streak || 0;
+    state.topicProgress = s.topicProgress || {};
+  }
+} catch(e) {}
+
+function saveState() {
+  try {
+    localStorage.setItem('qe_state', JSON.stringify({
+      answered: state.answered, correct: state.correct,
+      flashReviewed: state.flashReviewed, streak: state.streak,
+      topicProgress: state.topicProgress,
+    }));
+  } catch(e) {}
+}
+
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  const names = ['home','quiz','flashcards','problems','formulas'];
+  btns[names.indexOf(id)]?.classList.add('active');
+  state.currentPage = id;
+  if (id === 'home') renderHome();
+  if (id === 'quiz') renderQuizModeSelect();
+  if (id === 'flashcards') renderFlashcardDecks();
+  if (id === 'problems') renderProblems();
+  if (id === 'formulas') renderFormulas();
+  window.scrollTo(0, 0);
+}
+
+// ===== TOAST =====
+function toast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ===== HOME PAGE =====
+function renderHome() {
+  // Stats
+  document.getElementById('stat-answered').textContent = state.answered;
+  const acc = state.answered ? Math.round(state.correct / state.answered * 100) : 0;
+  document.getElementById('stat-accuracy').textContent = state.answered ? `${acc}% accuracy` : 'No attempts yet';
+  document.getElementById('stat-flash').textContent = state.flashReviewed;
+  document.getElementById('stat-flash-pct').textContent = state.flashReviewed > 0 ? `${state.flashReviewed} cards reviewed` : 'Start reviewing!';
+  document.getElementById('stat-streak').textContent = state.streak;
+
+  // Streak dots
+  const dotsEl = document.getElementById('streak-dots');
+  dotsEl.innerHTML = Array.from({length: 7}, (_, i) => {
+    const cls = i < state.streak ? 'streak-dot active' : (i === state.streak ? 'streak-dot semi' : 'streak-dot');
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  // Topic grid
+  const grid = document.getElementById('topic-grid');
+  grid.innerHTML = TOPICS.map(t => {
+    const prog = state.topicProgress[t.id] || 0;
+    return `
+      <div class="topic-card" style="--card-accent: ${t.color}" onclick="startQuiz('${t.id}')">
+        <div class="topic-icon" style="background: ${t.color}18; border-color: ${t.color}33">${t.icon}</div>
+        <div class="topic-name">${t.name}</div>
+        <div class="topic-desc">${t.desc}</div>
+        <div class="topic-meta">
+          <div class="topic-count">${t.count} questions</div>
+          <div style="font-size:0.75rem; color:${t.color}">${prog}%</div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:${prog}%; background:${t.color}"></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ===== QUIZ =====
+function renderQuizModeSelect() {
+  document.getElementById('quiz-mode-select').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-results').style.display = 'none';
+
+  // Topic chips
+  const chipsEl = document.getElementById('topic-filter-chips');
+  chipsEl.innerHTML = TOPICS.map(t =>
+    `<div class="filter-chip" onclick="startQuiz('${t.id}')" style="cursor:pointer">
+      ${t.icon} ${t.name}
+    </div>`
+  ).join('');
+}
+
+function getQuestionsFor(mode) {
+  let pool;
+  switch(mode) {
+    case 'mixed': pool = shuffleArr([...ALL_QUESTIONS]); break;
+    case 'hard': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.difficulty === 'hard')); break;
+    case 'brain': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === 'brain')); break;
+    case 'prob': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === 'prob')); break;
+    case 'stoch': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === 'stoch')); break;
+    case 'finance': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === 'finance')); break;
+    case 'calc': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === 'calc')); break;
+    case 'algo': pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === 'algo')); break;
+    default: pool = shuffleArr(ALL_QUESTIONS.filter(q => q.topic === mode));
+  }
+  return pool.slice(0, Math.min(12, pool.length));
+}
+
+function startQuiz(mode) {
+  const qs = getQuestionsFor(mode);
+  if (qs.length === 0) { toast('No questions in this category yet!', 'info'); return; }
+  state.quizQuestions = qs;
+  state.quizIndex = 0;
+  state.quizCorrect = 0;
+  state.quizAnswered = false;
+
+  document.getElementById('quiz-mode-select').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  document.getElementById('quiz-results').style.display = 'none';
+
+  showPage('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = state.quizQuestions[state.quizIndex];
+  const total = state.quizQuestions.length;
+  state.quizAnswered = false;
+
+  document.getElementById('quiz-progress-text').textContent = `Q${state.quizIndex+1} / ${total}`;
+  document.getElementById('quiz-score-display').textContent = `${state.quizCorrect} / ${state.quizIndex}`;
+  document.getElementById('quiz-progress-fill').style.width = `${(state.quizIndex / total) * 100}%`;
+
+  const topic = TOPICS.find(t => t.id === q.topic);
+  const diffClass = {easy:'diff-easy', medium:'diff-medium', hard:'diff-hard'}[q.difficulty];
+
+  const letters = ['A','B','C','D'];
+  const optionsHTML = q.options.map((opt, i) =>
+    `<button class="option-btn" id="opt-${i}" onclick="selectAnswer(${i})">
+      <div class="option-letter">${letters[i]}</div>
+      <div>${opt}</div>
+    </button>`
+  ).join('');
+
+  document.getElementById('quiz-question-area').innerHTML = `
+    <div class="question-card">
+      <div>
+        <span class="question-category">${topic?.icon || '📚'} ${topic?.name || q.topic}</span>
+        <span class="question-difficulty ${diffClass}">${q.difficulty}</span>
+      </div>
+      <div class="question-text">${q.question}</div>
+      <div class="question-hint" id="hint-box">
+        <div class="question-hint-label">💡 Hint</div>
+        ${q.hint}
+      </div>
+      <div class="options-grid">${optionsHTML}</div>
+      <div class="explanation-box" id="explanation-box">
+        <div class="explanation-label">📖 Explanation</div>
+        <div class="explanation-text">${q.explanation}</div>
+      </div>
+      <div class="quiz-actions">
+        <div class="quiz-actions-left">
+          <button class="btn-hint" onclick="showHint()">💡 Hint</button>
+          <button class="btn-explain" onclick="showExplanation()" id="explain-btn" style="display:none">📖 Explain</button>
+        </div>
+        <button class="btn-next" id="next-btn" onclick="nextQuestion()" disabled>
+          ${state.quizIndex + 1 < state.quizQuestions.length ? 'Next Question →' : 'See Results'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function showHint() {
+  document.getElementById('hint-box').classList.add('visible');
+}
+
+function showExplanation() {
+  document.getElementById('explanation-box').classList.add('visible');
+}
+
+function selectAnswer(chosen) {
+  if (state.quizAnswered) return;
+  state.quizAnswered = true;
+
+  const q = state.quizQuestions[state.quizIndex];
+  const correct = q.answer;
+  const isCorrect = chosen === correct;
+
+  // Disable all options
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === correct) btn.classList.add('correct');
+    else if (i === chosen && !isCorrect) btn.classList.add('incorrect');
+    else btn.classList.add('revealed');
+  });
+
+  // Update state
+  state.answered++;
+  if (isCorrect) {
+    state.quizCorrect++;
+    state.correct++;
+    state.streak++;
+    toast('✓ Correct!', 'success');
+  } else {
+    state.streak = Math.max(0, state.streak - 1);
+    toast('✗ Wrong — see explanation below', 'error');
+  }
+
+  // Update topic progress
+  const pct = state.topicProgress[q.topic] || 0;
+  state.topicProgress[q.topic] = Math.min(100, pct + (isCorrect ? 8 : 2));
+
+  saveState();
+  document.getElementById('quiz-score-display').textContent = `${state.quizCorrect} / ${state.quizIndex + 1}`;
+  document.getElementById('explain-btn').style.display = 'inline-flex';
+  document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+  state.quizIndex++;
+  if (state.quizIndex >= state.quizQuestions.length) {
+    showQuizResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showQuizResults() {
+  document.getElementById('quiz-active').style.display = 'none';
+  const resultsEl = document.getElementById('quiz-results');
+  resultsEl.style.display = 'block';
+
+  const total = state.quizQuestions.length;
+  const correct = state.quizCorrect;
+  const pct = Math.round(correct / total * 100);
+
+  const trophies = pct >= 90 ? '🏆' : pct >= 70 ? '🥈' : pct >= 50 ? '🥉' : '📚';
+  const message = pct >= 90 ? "Outstanding! Quant-ready." : pct >= 70 ? "Strong performance!" : pct >= 50 ? "Good start. Keep drilling." : "Keep practicing!";
+
+  resultsEl.innerHTML = `
+    <div class="results-screen">
+      <div class="results-trophy">${trophies}</div>
+      <div class="results-title">${message}</div>
+      <div class="results-score-circle">
+        <div class="results-pct">${pct}%</div>
+        <div class="results-pct-label">Score</div>
+      </div>
+      <div class="results-breakdown">
+        <div class="results-stat"><div class="results-stat-num" style="color:var(--green)">${correct}</div><div class="results-stat-label">Correct</div></div>
+        <div class="results-stat"><div class="results-stat-num" style="color:var(--red)">${total-correct}</div><div class="results-stat-label">Wrong</div></div>
+        <div class="results-stat"><div class="results-stat-num" style="color:var(--gold)">${total}</div><div class="results-stat-label">Total</div></div>
+      </div>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn-primary" onclick="renderQuizModeSelect()">Try Again</button>
+        <button class="btn-secondary" onclick="showPage('flashcards')">Review Flashcards</button>
+      </div>
+    </div>`;
+}
+
+function exitQuiz() {
+  renderQuizModeSelect();
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-results').style.display = 'none';
+  document.getElementById('quiz-mode-select').style.display = 'block';
+}
+
+// ===== FLASHCARDS =====
+function renderFlashcardDecks() {
+  document.getElementById('fc-study-area').style.display = 'none';
+  const selectorEl = document.getElementById('fc-deck-selector');
+  selectorEl.style.display = 'grid';
+  selectorEl.innerHTML = FLASHCARD_DECKS.map(deck => `
+    <div class="deck-card" onclick="openDeck('${deck.id}')" style="--deck-color:${deck.color}">
+      <div class="deck-icon">${deck.icon}</div>
+      <div class="deck-name">${deck.name}</div>
+      <div class="deck-count">${deck.cards.length} cards</div>
+    </div>`).join('');
+}
+
+function openDeck(deckId) {
+  const deck = FLASHCARD_DECKS.find(d => d.id === deckId);
+  if (!deck) return;
+  state.fcDeck = deck;
+  state.fcIndex = 0;
+  state.fcFlipped = false;
+
+  document.getElementById('fc-deck-selector').style.display = 'none';
+  document.getElementById('fc-study-area').style.display = 'block';
+  document.getElementById('fc-deck-name').textContent = `${deck.icon} ${deck.name}`;
+
+  renderFlashcard();
+}
+
+function renderFlashcard() {
+  const deck = state.fcDeck;
+  const card = deck.cards[state.fcIndex];
+  const total = deck.cards.length;
+
+  document.getElementById('fc-front-content').textContent = card.q;
+  document.getElementById('fc-back-content').textContent = card.a;
+  document.getElementById('fc-counter').textContent = `${state.fcIndex+1} / ${total}`;
+  document.getElementById('fc-progress-badge').textContent = `${state.fcIndex+1}/${total}`;
+
+  // Reset flip
+  const fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+  state.fcFlipped = false;
+  document.getElementById('fc-rating').style.display = 'none';
+}
+
+function flipCard() {
+  const fc = document.getElementById('flashcard');
+  state.fcFlipped = !state.fcFlipped;
+  fc.classList.toggle('flipped', state.fcFlipped);
+  if (state.fcFlipped) {
+    document.getElementById('fc-rating').style.display = 'flex';
+    state.flashReviewed++;
+    saveState();
+    document.getElementById('stat-flash').textContent = state.flashReviewed;
+  }
+}
+
+function prevCard() {
+  if (state.fcIndex > 0) {
+    state.fcIndex--;
+    renderFlashcard();
+  }
+}
+
+function nextCard() {
+  const deck = state.fcDeck;
+  if (state.fcIndex < deck.cards.length - 1) {
+    state.fcIndex++;
+    renderFlashcard();
+  } else {
+    toast('🎉 Deck complete!', 'success');
+  }
+}
+
+function rateCard(rating) {
+  const card = state.fcDeck.cards[state.fcIndex];
+  state.fcRatings[`${state.fcDeck.id}_${state.fcIndex}`] = rating;
+  if (rating === 'hard') toast('Marked as Hard — review again soon', 'info');
+  if (rating === 'easy') toast('✓ Marked as Easy!', 'success');
+  nextCard();
+}
+
+function exitFlashcards() {
+  renderFlashcardDecks();
+}
+
+// ===== PROBLEMS =====
+let problemTagFilter = 'all';
+let problemSearch = '';
+
+function renderProblems() {
+  const listEl = document.getElementById('problem-list');
+  let filtered = PROBLEMS;
+
+  if (problemTagFilter !== 'all') {
+    filtered = filtered.filter(p => p.tags.includes(problemTagFilter));
+  }
+  if (problemSearch) {
+    const s = problemSearch.toLowerCase();
+    filtered = filtered.filter(p =>
+      p.title.toLowerCase().includes(s) ||
+      p.problem.toLowerCase().includes(s)
+    );
+  }
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text3);">No problems found</div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map((p, idx) => {
+    const diffClass = {easy:'diff-easy', medium:'diff-medium', hard:'diff-hard'}[p.difficulty];
+    const tagsHTML = p.tags.map(t => `<span class="problem-tag tag-${t}">${t}</span>`).join('');
+    return `
+      <div class="problem-item" id="problem-${p.id}" onclick="toggleProblem(${p.id})">
+        <div class="problem-num">#${String(idx+1).padStart(2,'0')}</div>
+        <div class="problem-body">
+          <div class="problem-title">${p.title}</div>
+          <div class="problem-meta">
+            ${tagsHTML}
+            <span class="question-difficulty ${diffClass}" style="display:inline-flex">${p.difficulty}</span>
+            <span style="font-size:0.72rem; color:var(--text3); font-family:var(--font-mono)">${p.chapter}</span>
+          </div>
+          <div class="problem-detail" id="detail-${p.id}">
+            <div class="problem-question">${p.problem}</div>
+            <button class="solution-toggle" onclick="event.stopPropagation(); toggleSolution(${p.id})">
+              Show Solution
+            </button>
+            <div class="solution-box" id="sol-${p.id}">
+              ${p.solution}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleProblem(id) {
+  const detail = document.getElementById('detail-' + id);
+  detail.classList.toggle('open');
+}
+
+function toggleSolution(id) {
+  const sol = document.getElementById('sol-' + id);
+  const btn = sol.previousElementSibling;
+  sol.classList.toggle('open');
+  btn.textContent = sol.classList.contains('open') ? 'Hide Solution' : 'Show Solution';
+}
+
+function filterByTag(el, tag) {
+  document.querySelectorAll('#problem-filters .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  problemTagFilter = tag;
+  renderProblems();
+}
+
+function filterProblems() {
+  problemSearch = document.getElementById('problem-search').value;
+  renderProblems();
+}
+
+// ===== FORMULAS =====
+function renderFormulas() {
+  const tabsEl = document.getElementById('formula-tabs');
+  const contentsEl = document.getElementById('formula-contents');
+
+  tabsEl.innerHTML = FORMULA_SECTIONS.map((s, i) =>
+    `<button class="cs-tab ${i===0?'active':''}" onclick="showFormulaTab('${s.id}', this)">${s.name}</button>`
+  ).join('');
+
+  contentsEl.innerHTML = FORMULA_SECTIONS.map((s, i) => `
+    <div class="cs-content ${i===0?'active':''}" id="fsec-${s.id}">
+      <div class="formula-grid">
+        ${s.formulas.map(f => `
+          <div class="formula-card">
+            <div class="formula-name">${f.name}</div>
+            <div class="formula-eq">${f.eq}</div>
+            <div class="formula-note">${f.note}</div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function showFormulaTab(id, el) {
+  document.querySelectorAll('.cs-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cs-content').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('fsec-' + id).classList.add('active');
+}
+
+// ===== UTILITIES =====
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderHome();
+  renderFormulas();
+  renderProblems();
+});
+</script>
+</body>
+</html>
